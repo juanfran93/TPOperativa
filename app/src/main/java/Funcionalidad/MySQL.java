@@ -32,7 +32,7 @@ public class MySQL{
         this.mysqluser     = user;
         this.mysqlpass     = pass;
         this.mysqldateBase = db;
-        this.mysqlIP       = "192.168.1.38";
+        this.mysqlIP       = "192.168.1.36";
         this.mysqlPort     = "3306";
     }
 
@@ -83,7 +83,7 @@ public class MySQL{
                     this.mysqldateBase, this.mysqluser, this.mysqlpass);
 
             st = conn.createStatement();
-            st.executeUpdate("USE operativa");
+            st.executeUpdate("USE trazaapp");
 
             Log.v("MySql","Conexion con BD establecida.");
         } catch (SQLException se) {

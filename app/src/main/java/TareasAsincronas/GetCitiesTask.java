@@ -18,6 +18,8 @@ import java.util.List;
  */
 
 public class GetCitiesTask extends AsyncTask<Void, Void, ResultSet> {
+
+    private static final String TAG = GetCitiesTask.class.getCanonicalName();
     private ResultSet ciudades;
     private List listCities = new ArrayList<>();
     private Spinner spinnerCities;
@@ -43,7 +45,7 @@ public class GetCitiesTask extends AsyncTask<Void, Void, ResultSet> {
             int index = 0;
             while (cities.next()){
                 listCities.add(cities.getString("name"));
-                Log.d("Prueba",listCities.get(index).toString());
+                Log.d(TAG ,listCities.get(index).toString());
                 index+=1;
             }
         } catch (SQLException e) {

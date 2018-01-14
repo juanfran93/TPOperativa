@@ -32,6 +32,8 @@ public class RegisterActivity extends AppCompatActivity{
     private int itemSpinner;
     private RegisterActivity actividad;
 
+    private static final String TAG = RegisterActivity.class.getCanonicalName();
+
     private List listCities = new ArrayList<>();
 
     @Override
@@ -40,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity{
         setTitle("Crear Cuenta");
         setContentView(R.layout.activity_register);
         this.actividad = this;
+
 
         this.itemSpinner = 0;
 
@@ -143,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity{
         }
     }
     private void updateSpinner(){
-        Log.d("CIUDAD:","HAGO CLICK");
+        Log.d(TAG,"HAGO CLICK");
         SpinnerTask citiesTask = new SpinnerTask(this.spinnerCities,RegisterActivity.this,"name");
 
         String query = "SELECT * " +
