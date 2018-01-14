@@ -72,16 +72,14 @@ public class MainActivity extends AppCompatActivity
 
         this.direccionText = (TextView) header.findViewById(R.id.textDireccion);
         this.direccionText.setText(this.user.getDireccion());
-
-
-
     }
     /**
      * LINEAS DE GEO LOCALIZACION
      */
 
     /*
-    * FIN GEO LOCALIZACION*/
+    * FIN GEO LOCALIZACION
+    * */
 
     private void hideItem()
     {
@@ -93,7 +91,7 @@ public class MainActivity extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_nuevoRecurso).setVisible(false);
         }
         nav_Menu.findItem(R.id.nav_share).setVisible(false);
-        nav_Menu.findItem(R.id.nav_nuevoRecurso).setVisible(false);
+        nav_Menu.findItem(R.id.nav_nuevoRecurso).setVisible(true);
     }
     @Override
     public void onBackPressed() {

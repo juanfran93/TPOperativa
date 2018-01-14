@@ -50,13 +50,11 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
     private String textSpinner;
     private String track;
     private Vector<PointInfo> pointInfo = new Vector<PointInfo>();
-    private ResourcesMaps resources;
     private boolean selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.resources = this;
         this.selected = false;
         setContentView(R.layout.activity_prueba_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
