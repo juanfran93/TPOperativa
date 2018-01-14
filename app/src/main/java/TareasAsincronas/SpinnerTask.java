@@ -57,7 +57,7 @@ public class SpinnerTask extends AsyncTask<String, Void, ResultSet> {
             Log.d("COLUMNA",this.search_column);
             while (cities.next()){
                 list.add(cities.getString(this.search_column));
-                Log.d("Prueba",list.get(index).toString());
+               // Log.d("Prueba",list.get(index).toString());
                 index+=1;
             }
         } catch (SQLException e) {
