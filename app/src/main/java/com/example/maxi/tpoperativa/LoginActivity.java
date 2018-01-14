@@ -344,7 +344,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // TODO: attempt authentication against a network service.
 
             try {
-                Log.d("CONECANDO","INICIANDO CONEXION");
+                Log.d("CONECTANDO","INICIANDO CONEXION");
 
                 String query = "SELECT * FROM USERS " +
                         "WHERE email='"+this.mEmail+"'" +

@@ -50,13 +50,11 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
     private String textSpinner;
     private String track;
     private Vector<PointInfo> pointInfo = new Vector<PointInfo>();
-    private ResourcesMaps resources;
     private boolean selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.resources = this;
         this.selected = false;
         setContentView(R.layout.activity_prueba_maps);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -69,8 +67,9 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         //Genero la query para cargar el spinner
 
         String query = "SELECT * " +
-                "FROM resources " +
-                "ORDER BY name";
+                "FROM resources as R JOIN users_resources as UR ON (R.id=UR.resource_id ) " +
+                "WHERE UR.user_id = " + ((Persona)element).getId() +
+                " ORDER BY name";
         updateSpinner(this.spinnerCities,query,"name");
 
         this.textSpinner = "";
@@ -232,7 +231,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
     //Si hay dos puntos que compiten por la misma posicion, muevo la latitud para
     //que no se solapen
     private void changeLocationIdem(PointInfo point) {
-        double latitude_add = 00.00001;
+        double latitude_add = 00.00025;
         double aux=0;
         for(PointInfo p: pointInfo){
             if((p.getLatitude()==point.getLatitude())&& (p.getLongitude()==point.getLongitude())){
