@@ -17,6 +17,7 @@ import Query.QueryPersona;
  */
 
 public class Envio extends Elemento{
+
     private String date;
     private Persona user;
     private Recurso resource;
