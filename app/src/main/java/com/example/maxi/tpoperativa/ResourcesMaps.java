@@ -252,7 +252,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
             return R.layout.icon_maps_admin;
         }
     }
-    //coment
+    //com
 
     //Genero el mapa de bits para dibujar el icono
     private Bitmap getMarkerBitmapFromView(String text, int numberIcon) {
