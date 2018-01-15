@@ -10,14 +10,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
-import Funcionalidad.Elemento;
 import Funcionalidad.Persona;
 import Funcionalidad.Recurso;
 import TareasAsincronas.ResultSetTask;
@@ -134,7 +132,7 @@ public class SendActivity extends AppCompatActivity {
     private void verificarDatos() {
 
         if(existeTrack()){
-            if(persona_recurso()){
+            if(poseePersona_recurso()){
                 Log.d("ANTES DE SENDPACKAGE",this.user.toString());
                // SendPackage send = new SendPackage(this.user,spinnerItem_recurso,spinnerItem_destino,this.track.getText(),this.id_destino,this.descripcion.getText(),this.resource,this);
                 SendPackage send = new SendPackage(this.user,this.track.getText(),this.id_destino,this.descripcion.getText(),this.resource,this);
@@ -149,7 +147,7 @@ public class SendActivity extends AppCompatActivity {
         }
     }
 
-    private boolean persona_recurso() {
+    private boolean poseePersona_recurso() {
         String query = "SELECT * " +
                        "FROM   USERS_RESOURCES AS US, RESOURCES AS R " +
                        "WHERE  US.RESOURCE_ID = R.ID " +
