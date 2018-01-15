@@ -66,9 +66,9 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         this.spinnerTrack  = (Spinner) findViewById(R.id.spinner_track);
         //Genero la query para cargar el spinner
 
-        String query = "SELECT * " +
-                "FROM resources as R JOIN users_resources as UR ON (R.id=UR.resource_id ) " +
-                "WHERE UR.user_id = " + ((Persona)element).getId() +
+        String query = "SELECT name " +
+                "FROM resource_route as RR INNER JOIN resources as R ON RR.id_resource = R.id " +
+                "WHERE id_origen = " + ((Persona)element).getId() + " OR id_destino = " + ((Persona)element).getId()+
                 " ORDER BY name";
         updateSpinner(this.spinnerCities,query,"name");
 
@@ -80,9 +80,8 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
 
                 String text = (String) spinnerCities.getSelectedItem();
                 String query = " SELECT track_code "+
-                        " FROM RESOURCES AS R, RESOURCES_TRACK AS RT "+
-                        " WHERE R.ID = RT.ID_RESOURCE" +
-                        "   AND R.name = '"+text+"'" +
+                        " FROM RESOURCES AS R INNER JOIN resource_route AS RR ON R.id = RR.id_resource"+
+                        " WHERE R.name = '"+text+"'" + " AND id_origen = " + ((Persona)element).getId() + " OR id_destino = " + ((Persona)element).getId() +
                         " ORDER BY RT.TRACK_CODE ";
                 updateSpinner(spinnerTrack,query,"track_code");
                 selected = true;
