@@ -1,7 +1,6 @@
 package Funcionalidad;
 
 
-import android.os.StrictMode;
 import android.util.Log;
 
 import java.sql.Connection;

@@ -15,11 +15,8 @@ import com.example.maxi.tpoperativa.RegisterActivity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.util.Date;
 
 import Funcionalidad.Elemento;
-import Funcionalidad.Persona;
 
 /**
  * Created by Maxi on 2/5/2017.
