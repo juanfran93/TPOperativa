@@ -1,6 +1,5 @@
 package TareasAsincronas;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,7 +9,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.maxi.tpoperativa.LoginActivity;
-import com.example.maxi.tpoperativa.RegisterActivity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

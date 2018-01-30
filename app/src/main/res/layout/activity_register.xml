@@ -23,7 +23,7 @@
                     android:weightSum="3">
 
                         <EditText
-                            android:id="@+id/txt_nombre"
+                            android:id="@+id/txt_Cantidad"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@android:color/white"
@@ -42,7 +42,7 @@
                             android:ems="10"
                             android:inputType="textEmailAddress"
                             android:text="Email"
-                            app:layout_constraintTop_toBottomOf="@+id/txt_nombre"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_Cantidad"
                             tools:layout_editor_absoluteX="8dp" />
 
                         <EditText

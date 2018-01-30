@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.util.Log;
 
-import com.example.maxi.tpoperativa.RegisterActivity;
 import com.example.maxi.tpoperativa.SendActivity;
 
 import Funcionalidad.Envio;

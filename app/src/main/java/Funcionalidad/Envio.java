@@ -1,15 +1,11 @@
 package Funcionalidad;
 
-import android.util.Log;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import Query.AbsQuery;
 import Query.QueryEnvio;
-import Query.QueryPersona;
 
 /**
  * Created by Maxi on 2/5/2017.

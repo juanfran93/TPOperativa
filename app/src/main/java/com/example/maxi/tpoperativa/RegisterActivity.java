@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity{
 
         this.itemSpinner = 0;
 
-        this.Nombre = (TextView) findViewById(R.id.txt_nombre);
+        this.Nombre = (TextView) findViewById(R.id.txt_Cantidad);
         this.Nombre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
