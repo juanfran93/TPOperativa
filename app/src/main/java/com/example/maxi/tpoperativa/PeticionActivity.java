@@ -26,9 +26,6 @@ public class PeticionActivity extends AppCompatActivity {
 
     private LocalReciverPeticion reciever = new LocalReciverPeticion(this);
 
-    /*
-    private LocalReciever reciever = new LocalReciever(this); ///
-    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

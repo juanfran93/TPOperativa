@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity
 
         if(!this.user.isAdmin()) {
             nav_Menu.findItem(R.id.nav_trazarRecurso).setVisible(false);
-            nav_Menu.findItem(R.id.nav_nuevoRecurso).setVisible(false);
+            nav_Menu.findItem(R.id.nav_donarRecurso).setVisible(false);
         }
         nav_Menu.findItem(R.id.nav_share).setVisible(false);
-        nav_Menu.findItem(R.id.nav_nuevoRecurso).setVisible(false);
+        nav_Menu.findItem(R.id.nav_donarRecurso).setVisible(false);
     }
     @Override
     public void onBackPressed() {
@@ -114,22 +114,32 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intentActivity = null;
+        switch (id){
+            case R.id.nav_donarRecurso :
+                intentActivity = new Intent(MainActivity.this, DonationActivity.class);
+                intentActivity.putExtra("Usuario",user);
+                startActivity(intentActivity);
+                break;
 
-        if (id == R.id.nav_nuevoRecurso) {
-            // Handle the camera action
-        } else if (id == R.id.nav_trazarRecurso) {
-            Intent sendActivity = new Intent(MainActivity.this, SendActivity.class);
-            sendActivity.putExtra("Usuario",user);
-            startActivity(sendActivity);
-        } else if (id == R.id.nav_verRecurso) {
-            //LLamado a elegir recurso primero y despues mostrar en mapa
-            //Intent mainActivity = new Intent(MainActivity.this,MapsActivity.class);
-            Intent mainActivity = new Intent(MainActivity.this,ResourcesMaps.class);
-            mainActivity.putExtra("Persona",user);
-            startActivity(mainActivity);
+            case R.id.nav_nuevaPeticion :
+                intentActivity = new Intent(MainActivity.this, PeticionActivity.class);
+                intentActivity.putExtra("Usuario",user);
+                startActivity(intentActivity);
+                break;
+            case R.id.nav_trazarRecurso :
+                intentActivity = new Intent(MainActivity.this, SendActivity.class);
+                intentActivity.putExtra("Usuario",user);
+                startActivity(intentActivity);
+                break;
 
-        } else if (id == R.id.nav_share) {
-
+            case R.id.nav_verRecurso :
+                //LLamado a elegir recurso primero y despues mostrar en mapa
+                //Intent mainActivity = new Intent(MainActivity.this,MapsActivity.class);
+                intentActivity = new Intent(MainActivity.this,ResourcesMaps.class);
+                intentActivity.putExtra("Persona",user);
+                startActivity(intentActivity);
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

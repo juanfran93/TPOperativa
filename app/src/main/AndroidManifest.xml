@@ -63,6 +63,9 @@
 
         <activity android:name=".DonationActivity"></activity>
         <activity android:name=".PeticionActivity"></activity>
+        <service
+            android:name="ServiceCaller"
+            android:exported="false" />
     </application>
 
 </manifest>
