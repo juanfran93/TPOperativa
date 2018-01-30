@@ -61,6 +61,7 @@
 
         <uses-library android:name="com.google.android.maps" />
 
+        <activity android:name=".DonationActivity"></activity>
         <activity android:name=".PeticionActivity"></activity>
     </application>
 
