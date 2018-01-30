@@ -1,7 +1,5 @@
 package Funcionalidad;
 
-import java.sql.ResultSet;
-
 /**
  * Created by Maxi on 23/3/2017.
  */

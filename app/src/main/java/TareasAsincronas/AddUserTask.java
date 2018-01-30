@@ -2,8 +2,6 @@ package TareasAsincronas;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.Toast;
 
 import com.example.maxi.tpoperativa.LoginActivity;
 

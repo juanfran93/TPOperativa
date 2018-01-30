@@ -4,7 +4,6 @@ package TareasAsincronas;
  * Created by Maxi on 2/5/2017.
  */
 
-import android.icu.util.RangeValueIterator;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import com.example.maxi.tpoperativa.LoginActivity;
 
 import Funcionalidad.Elemento;
-import Funcionalidad.Persona;
+
 public class TaskInsert extends AsyncTask<String, Void, Integer> {
 
     private Elemento element;

@@ -3,9 +3,6 @@ package Query;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import java.util.Vector;
-import java.util.concurrent.ExecutionException;
-
 import Funcionalidad.Elemento;
 import Funcionalidad.Envio;
 import TareasAsincronas.TaskInsert;
