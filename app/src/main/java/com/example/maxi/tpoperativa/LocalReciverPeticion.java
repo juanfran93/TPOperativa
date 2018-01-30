@@ -48,7 +48,7 @@ public class LocalReciverPeticion extends BroadcastReceiver {
                     e.printStackTrace();
                 }
 
-                peticionAct.setRecursos(Recursos);
+                peticionAct.setAutoTextResources(Recursos);
                 break;
                 //--------------------------
             case PeticionActivity.GETRESOURCES_PATH:
@@ -59,4 +59,5 @@ public class LocalReciverPeticion extends BroadcastReceiver {
         }
 
     }
+
 }

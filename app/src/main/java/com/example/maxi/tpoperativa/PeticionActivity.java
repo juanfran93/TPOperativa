@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -18,7 +19,7 @@ public class PeticionActivity extends AppCompatActivity {
 
     static final String TAG = PeticionActivity.class.getCanonicalName();
     public static final String GETRESOURCES_OP = "getresources";
-    public static final String GETRESOURCES_PATH = "/getresources";
+    public static final String GETRESOURCES_PATH = "getresources";
 
     private HashMap<String, Integer> recursos;
     private AutoCompleteTextView recursosEditText;
@@ -35,16 +36,21 @@ public class PeticionActivity extends AppCompatActivity {
 
         recursosEditText = (AutoCompleteTextView) findViewById(R.id.resources_autocom);
 
-        Intent intent = getIntent();
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
-        final Intent mServiceIntent = new Intent(PeticionActivity.this, ServiceCaller.class);   //
-
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(PeticionActivity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
-            //recursosEditText.
+            Intent intent = getIntent();
+
+            LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
+            final Intent mServiceIntent = new Intent(PeticionActivity.this, ServiceCaller.class);   //
+
+            mServiceIntent.putExtra(GETRESOURCES_OP, "getresources");
+            mServiceIntent.putExtra(GETRESOURCES_PATH, "getresources");
+            startService(mServiceIntent);
+
+        } else {
+            Toast.makeText(PeticionActivity.this, "Conexion no disponible", Toast.LENGTH_SHORT);
         }
 
 
@@ -52,7 +58,6 @@ public class PeticionActivity extends AppCompatActivity {
 
 
     }
-
     public void setAutoTextResources(HashMap<String,Integer> recursos){
         this.recursos = recursos;
         String[] recursosList = recursos.keySet().toArray(new String[recursos.keySet().size()]);
@@ -60,6 +65,7 @@ public class PeticionActivity extends AppCompatActivity {
                 (this,android.R.layout.simple_list_item_1,recursosList);
         recursosEditText.setAdapter(adapter);
     }
+
 
     public HashMap<String, Integer> getRecursos() {
         return recursos;
