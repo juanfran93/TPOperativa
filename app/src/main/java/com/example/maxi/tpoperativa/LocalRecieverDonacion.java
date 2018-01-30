@@ -31,7 +31,7 @@ class LocalRecieverDonacion extends BroadcastReceiver {
 
                 try {
 
-                    /*JSONObject json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
+                    JSONObject json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
 
                     JSONArray jsonArray = new JSONArray(json.getString("resources"));
 
@@ -47,20 +47,22 @@ class LocalRecieverDonacion extends BroadcastReceiver {
                         recursos.put(recurso,id);
                     }
                     activityDonation.setAutoTextResources(recursos);
-                */
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
             case "addPackage":
-                /*JSONObject json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
+                JSONObject json = null;
                 try {
+                    json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
                     activityDonation.notifySuccess(json.getString("mensaje"));
-                } catch (JSONException e) {
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
                 }
-                */
+
 
                 break;
         }

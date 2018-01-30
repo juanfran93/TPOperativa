@@ -18,16 +18,13 @@ public class PeticionActivity extends AppCompatActivity {
 
     static final String TAG = PeticionActivity.class.getCanonicalName();
     public static final String GETRESOURCES_OP = "getresources";
-    public static final String GETRESOURCES_PATH = "/getresources";
+    public static final String GETRESOURCES_PATH = "getresources";
 
     private HashMap<String, Integer> recursos;
     private AutoCompleteTextView recursosEditText;
 
     private LocalReciverPeticion reciever = new LocalReciverPeticion(this);
 
-    /*
-    private LocalReciever reciever = new LocalReciever(this); ///
-    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

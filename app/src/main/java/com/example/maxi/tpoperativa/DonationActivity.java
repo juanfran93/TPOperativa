@@ -30,11 +30,11 @@ public class DonationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_donation);
 
         recursosEditText = (AutoCompleteTextView) findViewById(R.id.autoText_resource);
-        //LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION)); <--- descomentar cuando...
-        //final Intent mServiceIntent = new Intent(DonationActivity.this, ServiceCaller.class); <------------- ...lucho comitee+
-        //mServiceIntent.putExtra(OPERACION, "getresources");
-        //mServiceIntent.putExtra("ruta", "getresources");
-        //startService(mServiceIntent);
+        LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
+        final Intent mServiceIntent = new Intent(DonationActivity.this, ServiceCaller.class);
+        mServiceIntent.putExtra(OPERACION, "getresources");
+        mServiceIntent.putExtra("ruta", "getresources");
+        startService(mServiceIntent);
 
         final EditText cantidadEditText = (EditText) findViewById(R.id.editText_cantidad);
 
@@ -42,12 +42,12 @@ public class DonationActivity extends AppCompatActivity {
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mServiceIntent.replaceExtras(mServiceIntent.getExtras());
-                //mServiceIntent.putExtra(OPERACION, "addPackage");
-                //mServiceIntent.putExtra("ruta", "addPackage");
-                //mServiceIntent.putExtra("resource",recursos.get(recursosEditText.getText().toString()));
-                //mServiceIntent.putExtra("cantidad",cantidadEditText.getText());
-                //startService(mServiceIntent);
+                mServiceIntent.replaceExtras(mServiceIntent.getExtras());
+                mServiceIntent.putExtra(OPERACION, "addPackage");
+                mServiceIntent.putExtra("ruta", "addPackage");
+                mServiceIntent.putExtra("resource",recursos.get(recursosEditText.getText().toString()));
+                mServiceIntent.putExtra("cantidad",cantidadEditText.getText());
+                startService(mServiceIntent);
 
             }
         });

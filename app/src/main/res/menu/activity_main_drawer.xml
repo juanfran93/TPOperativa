@@ -3,9 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_nuevoRecurso"
+            android:id="@+id/nav_donarRecurso"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Donar Recurso" />
+        <item
+            android:id="@+id/nav_nuevaPeticion"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Nuevo Recurso" />
+            android:title="Solicitar Petición" />
         <item
             android:id="@+id/nav_trazarRecurso"
             android:icon="@drawable/ic_menu_gallery"

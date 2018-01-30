@@ -7,6 +7,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.List;
 
 
 /**
@@ -31,7 +41,7 @@ public class ServiceCaller extends IntentService {
     public static final String SERVICE_TYPE = "SERVICE_TYPE";
     private static final String OPERACION = "OPERATION_SERVICE";
 
-    final String BASE_URL = "http://192.168.0.10:8080/OlimpicRestServer/olimpic/";
+    final String BASE_URL = "http://192.168.1.36/TrazaAppServer/trazaapp/";
 
     static final String TAG = ServiceCaller.class.getCanonicalName();
 
@@ -56,10 +66,19 @@ public class ServiceCaller extends IntentService {
         try {
             URL requestURL = new URL(builtURI.toString());
             conn = (HttpURLConnection) requestURL.openConnection();
-            //List<NameValuePair> params = new ArrayList<>();
+            List<NameValuePair> params = new ArrayList<>();
             switch (operation) {
-                case "registro":
-                    //---
+                case "addPackage":
+                    params.add(new BasicNameValuePair("idResource",intent.getStringExtra("resource")));
+                    params.add(new BasicNameValuePair("cantidad", intent.getStringExtra("cantidad")));
+
+
+                    Log.d(TAG,params.toString());
+
+                    response = new Intent(RESPONSE_ACTION);
+                    response.putExtra(DonationActivity.OPERACION, operation);
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,params));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(response);
                 break;
 
                 default:
@@ -107,6 +126,30 @@ public class ServiceCaller extends IntentService {
         BufferedReader buffer = new BufferedReader(reader);
         String line = buffer.readLine();
         return line;
+    }
+
+    public String post(String posturl, List<NameValuePair> params){
+
+        try {
+
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost(posturl);
+            //AÑADIR PARAMETROS
+
+            httppost.setEntity(new UrlEncodedFormEntity(params));
+
+            //Finalmente ejecutamos enviando la info al server/
+            HttpResponse resp = httpclient.execute(httppost);
+            HttpEntity ent = resp.getEntity();/*y obtenemos una respuesta*/
+            Log.d(TAG,resp.getEntity().toString() );
+
+            String text = EntityUtils.toString(ent);
+            Log.e(TAG,text);
+            return text;
+
+        }
+        catch(Exception e) { return "error";}
+
     }
 
 }
