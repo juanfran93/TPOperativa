@@ -39,7 +39,8 @@ public class ServiceCaller extends IntentService {
     public static final String RESPONSE_ACTION = "Respuesta del servidor";
     public static final String RESPONSE = "DATA RESPONSE";
     public static final String SERVICE_TYPE = "SERVICE_TYPE";
-    private static final String OPERACION = "OPERATION_SERVICE";
+    public static final String OPERACION = "OPERATION_SERVICE";
+    public static final String RUTA = "RUTA";
 
     final String BASE_URL = "http://192.168.1.36/TrazaAppServer/trazaapp/";
 
@@ -76,10 +77,22 @@ public class ServiceCaller extends IntentService {
                     Log.d(TAG,params.toString());
 
                     response = new Intent(RESPONSE_ACTION);
-                    response.putExtra(DonationActivity.OPERACION, operation);
+                    response.putExtra(ServiceCaller.OPERACION, operation);
                     response.putExtra(RESPONSE, this.post(BASE_URL + ruta,params));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(response);
                 break;
+
+                case "attemptlogin":
+                    params.add(new BasicNameValuePair("email",intent.getStringExtra("email")));
+                    params.add(new BasicNameValuePair("password", intent.getStringExtra("password")));
+
+                    Log.d(TAG,params.toString());
+
+                    response = new Intent(RESPONSE_ACTION);
+                    response.putExtra(ServiceCaller.OPERACION, operation);
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,params));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(response);
+                    break;
 
                 default:
                     conn.setRequestMethod("GET");

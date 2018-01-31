@@ -25,7 +25,7 @@ class LocalRecieverDonacion extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String operation = intent.getStringExtra(DonationActivity.OPERACION);
+        String operation = intent.getStringExtra(ServiceCaller.OPERACION);
         switch (operation) {
             case "getresources":
 

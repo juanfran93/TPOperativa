@@ -19,7 +19,6 @@ import java.util.TimerTask;
 
 public class DonationActivity extends AppCompatActivity {
 
-    public static final String OPERACION = "OPERATION_SERVICE";
     private AutoCompleteTextView recursosEditText;
     private HashMap<String,Integer> recursos;
     private LocalRecieverDonacion reciever = new LocalRecieverDonacion(this);
@@ -32,7 +31,7 @@ public class DonationActivity extends AppCompatActivity {
         recursosEditText = (AutoCompleteTextView) findViewById(R.id.autoText_resource);
         LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
         final Intent mServiceIntent = new Intent(DonationActivity.this, ServiceCaller.class);
-        mServiceIntent.putExtra(OPERACION, "getresources");
+        mServiceIntent.putExtra(ServiceCaller.OPERACION, "getresources");
         mServiceIntent.putExtra("ruta", "getresources");
         startService(mServiceIntent);
 
@@ -43,7 +42,7 @@ public class DonationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mServiceIntent.replaceExtras(mServiceIntent.getExtras());
-                mServiceIntent.putExtra(OPERACION, "addPackage");
+                mServiceIntent.putExtra(ServiceCaller.OPERACION, "addPackage");
                 mServiceIntent.putExtra("ruta", "addPackage");
                 mServiceIntent.putExtra("resource",recursos.get(recursosEditText.getText().toString()));
                 mServiceIntent.putExtra("cantidad",cantidadEditText.getText());
