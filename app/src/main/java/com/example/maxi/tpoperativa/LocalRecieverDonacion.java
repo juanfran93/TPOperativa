@@ -3,6 +3,8 @@ package com.example.maxi.tpoperativa;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +20,7 @@ import java.util.Hashtable;
 class LocalRecieverDonacion extends BroadcastReceiver {
 
     private DonationActivity activityDonation;
+    private static final String TAG = LocalBroadcastManager.class.getCanonicalName();
 
     public LocalRecieverDonacion(DonationActivity activityDonation) {
         this.activityDonation = activityDonation;
@@ -25,7 +28,7 @@ class LocalRecieverDonacion extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String operation = intent.getStringExtra(DonationActivity.OPERACION);
+        String operation = intent.getStringExtra(ServiceCaller.OPERACION);
         switch (operation) {
             case "getresources":
 
@@ -42,7 +45,7 @@ class LocalRecieverDonacion extends BroadcastReceiver {
                         JSONObject jsonRecurso = jsonArray.getJSONObject(i);
 
                         Integer id = jsonRecurso.getInt("id");
-                        String recurso = jsonRecurso.getString("name");
+                        String recurso = jsonRecurso.getString("nombre");
 
                         recursos.put(recurso,id);
                     }
@@ -54,6 +57,7 @@ class LocalRecieverDonacion extends BroadcastReceiver {
                 }
                 break;
             case "addPackage":
+                Log.e(TAG, intent.getStringExtra(ServiceCaller.RESPONSE));
                 JSONObject json = null;
                 try {
                     json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));

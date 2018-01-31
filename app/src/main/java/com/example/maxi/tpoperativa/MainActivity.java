@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_donarRecurso).setVisible(false);
         }
         nav_Menu.findItem(R.id.nav_share).setVisible(false);
-        nav_Menu.findItem(R.id.nav_donarRecurso).setVisible(false);
+        nav_Menu.findItem(R.id.nav_donarRecurso).setVisible(true);
     }
     @Override
     public void onBackPressed() {

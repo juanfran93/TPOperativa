@@ -82,7 +82,7 @@ public class MySQL{
                     this.mysqldateBase, this.mysqluser, this.mysqlpass);
 
             st = conn.createStatement();
-            st.executeUpdate("USE trazaapp");
+            st.executeUpdate("USE trazaapp2");
 
             Log.v("MySql","Conexion con BD establecida.");
         } catch (SQLException se) {

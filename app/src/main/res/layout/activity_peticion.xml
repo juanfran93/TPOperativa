@@ -26,18 +26,22 @@
 
             <AutoCompleteTextView
                 android:id="@+id/resources_autocom"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
                 android:backgroundTint="@android:color/holo_blue_bright"
                 android:popupBackground="@color/colorAccent"
                 android:text="Recursos" />
 
             <EditText
                 android:id="@+id/txt_Cantidad"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
                 android:background="@android:color/white"
                 android:ems="10"
                 android:hint="Cantidad"
