@@ -30,23 +30,22 @@ public class LocalRecieverLogin extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String operation = intent.getStringExtra(ServiceCaller.SERVICE_TYPE);
+        String operation = intent.getStringExtra(ServiceCaller.OPERACION);
         switch (operation) {
             case LoginActivity.ATTEMPTLOGIN_OP:
                 //--
                 Persona persona = new Persona();
                 try {
                     JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
-                    String status = intent.getStringExtra("status");
-                    Log.d(ServiceCaller.class.getCanonicalName(),status);
+                    int status = jsona.getInt("status");
+
 
                     switch (status){
-                        case "200" :
+                        case 200 :
                             JSONObject json = new JSONObject(jsona.getString("usuario"));
                             persona.setAdmin(json.getBoolean("admin"));
-                            persona.setCiudad(json.getInt("location_id"));
+                            persona.setCiudad(json.getInt("ciudad"));
                             persona.setDireccion(json.getString("direccion"));
-                            persona.setDomicilio(json.getString("address"));
                             persona.setEmail(json.getString("email"));
                             persona.setId(json.getInt("id"));
                             persona.setLatitude(json.getDouble("latitude"));
@@ -56,9 +55,10 @@ public class LocalRecieverLogin extends BroadcastReceiver {
                             persona.setWeb(json.getString("web"));
                             persona.setUser(json.getString("username"));
                             persona.setTelefono(json.getString("phone"));
+                            loginActivity.goToMenu(persona);
                             break;
                         default :
-                            Log.d(ServiceCaller.class.getCanonicalName(), status);
+                            loginActivity.showError();
                             break;
                     }
                 }catch (JSONException e) {

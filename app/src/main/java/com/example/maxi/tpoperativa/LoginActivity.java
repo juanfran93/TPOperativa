@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -70,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private Button mEmailSignInButton;
     private Button mRegister;
+    private LocalRecieverLogin reciever = new LocalRecieverLogin(this);
 
     public static final String ATTEMPTLOGIN_OP = "attemptlogin";
     public static final String ATTEMPTLOGIN_PATH = "attemptlogin";
@@ -122,6 +125,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
         mEmailView.setText("moisesbueno@gmail.com");
         mPasswordView.setText("moises");
+        LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
 
 
     }
@@ -335,6 +339,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
+
+    public void goToMenu(Persona p){
+        Intent mainActivity = new Intent(LoginActivity.this,MainActivity.class);
+        mainActivity.putExtra("Persona",p);
+        startActivity(mainActivity);
+        finish();
+    }
+
+    public void showError(){
+        mPasswordView.setError(getString(R.string.error_incorrect_password));
+        mPasswordView.requestFocus();
+    }
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 

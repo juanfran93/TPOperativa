@@ -64,21 +64,18 @@ public class ServiceCaller extends IntentService {
         int responseCode = -1;
         java.util.Calendar cal = java.util.Calendar.getInstance();
         SimpleDateFormat sdf = null;
+        JSONObject json = new JSONObject();
 
         try {
             URL requestURL = new URL(builtURI.toString());
             conn = (HttpURLConnection) requestURL.openConnection();
-            List<NameValuePair> params = new ArrayList<>();
             switch (operation) {
                 case "addPackage":
                     //preparacion para envio de json
-                    params.add(new BasicNameValuePair("idResource",intent.getStringExtra("resource")));
-                    params.add(new BasicNameValuePair("cantidad", intent.getStringExtra("cantidad")));
-                    JSONObject json = new JSONObject();
                     json.put("idResource",intent.getStringExtra("resource"));
                     json.put("cantidad",intent.getStringExtra("cantidad"));
 
-                    Log.d(TAG,params.toString());
+                    Log.d(TAG,json.toString());
 
                     response = new Intent(RESPONSE_ACTION);
                     response.putExtra(ServiceCaller.OPERACION, operation);
@@ -89,14 +86,14 @@ public class ServiceCaller extends IntentService {
                 break;
 
                 case "attemptlogin":
-                    params.add(new BasicNameValuePair("email",intent.getStringExtra("email")));
-                    params.add(new BasicNameValuePair("password", intent.getStringExtra("password")));
+                    json.put("email",intent.getStringExtra("email"));
+                    json.put("password",intent.getStringExtra("password"));
 
-                    Log.d(TAG,params.toString());
+                    Log.d(TAG,json.toString());
 
                     response = new Intent(RESPONSE_ACTION);
                     response.putExtra(ServiceCaller.OPERACION, operation);
-                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,params));
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(response);
                     break;
 
