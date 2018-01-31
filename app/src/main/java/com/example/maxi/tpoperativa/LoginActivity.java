@@ -40,6 +40,7 @@ import Funcionalidad.MySQL;
 import Funcionalidad.Persona;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.example.maxi.tpoperativa.PeticionActivity.GETRESOURCES_PATH;
 
 /**
  * A login screen that offers login via email/password.
@@ -69,6 +70,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mLoginFormView;
     private Button mEmailSignInButton;
     private Button mRegister;
+
+    public static final String ATTEMPTLOGIN_OP = "attemptlogin";
+    public static final String ATTEMPTLOGIN_PATH = "attemptlogin";
 
 
 
@@ -205,10 +209,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
+
             showProgress(true);
+            /*
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute();
+            */
 
+
+            Intent intentL = new Intent(LoginActivity.this,ServiceCaller.class);
+            intentL.putExtra(ServiceCaller.OPERACION, ATTEMPTLOGIN_OP);
+            intentL.putExtra(ServiceCaller.RUTA, ATTEMPTLOGIN_PATH);
+            intentL.putExtra("email",email);
+            intentL.putExtra("password",password);
+
+            startService(intentL);
 
         }
     }

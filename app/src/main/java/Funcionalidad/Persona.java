@@ -19,6 +19,10 @@ public class Persona extends Elemento implements Serializable {
     private String direccion;
 	private String Web;
 
+	public Persona(){
+
+	}
+
     public Persona(int id, String u, String pass, String nombre, String telefono, String domicilio,
                    int ciudad, boolean admin, String email, double lat, double lon, String web) {
         this.id        = id;

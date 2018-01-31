@@ -50,10 +50,7 @@ public class LocalReciverPeticion extends BroadcastReceiver {
 
                 peticionAct.setAutoTextResources(Recursos);
                 break;
-                //--------------------------
-            case PeticionActivity.GETRESOURCES_PATH:
-                //--
-                break;
+                //-------------------------
 
 
         }
