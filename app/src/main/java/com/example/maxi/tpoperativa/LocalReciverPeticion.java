@@ -30,7 +30,7 @@ public class LocalReciverPeticion extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String operation = intent.getStringExtra(ServiceCaller.SERVICE_TYPE);
+        String operation = intent.getStringExtra(ServiceCaller.OPERACION);
         switch (operation){
             case PeticionActivity.GETRESOURCES_OP :
                 //--
@@ -41,7 +41,7 @@ public class LocalReciverPeticion extends BroadcastReceiver {
 
                     for(int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonRec = jsonArray.getJSONObject(i);
-                        Recursos.put(jsonRec.getString("name"),jsonRec.getInt("id_resource"));
+                        Recursos.put(jsonRec.getString("nombre"),jsonRec.getInt("id"));
                     }
 
                 }catch (JSONException e) {
@@ -50,7 +50,7 @@ public class LocalReciverPeticion extends BroadcastReceiver {
 
                 peticionAct.setAutoTextResources(Recursos);
                 break;
-                //-------------------------
+
 
 
         }

@@ -13,9 +13,11 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class ServiceCaller extends IntentService {
     public static final String OPERACION = "OPERATION_SERVICE";
     public static final String RUTA = "RUTA";
 
-    final String BASE_URL = "http://192.168.1.36/TrazaAppServer/trazaapp/";
+    final String BASE_URL = "http://192.168.1.36:8080/TrazaAppServer/trazaapp/";
 
     static final String TAG = ServiceCaller.class.getCanonicalName();
 
@@ -53,8 +55,7 @@ public class ServiceCaller extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
 
         String operation = intent.getStringExtra(OPERACION);
-        String ruta = intent.getStringExtra("ruta");
-
+        String ruta = intent.getStringExtra(RUTA);
         Uri builtURI = Uri.parse(BASE_URL + ruta).buildUpon().build();
         InputStream is = null;
         HttpURLConnection conn = null;
@@ -70,15 +71,20 @@ public class ServiceCaller extends IntentService {
             List<NameValuePair> params = new ArrayList<>();
             switch (operation) {
                 case "addPackage":
+                    //preparacion para envio de json
                     params.add(new BasicNameValuePair("idResource",intent.getStringExtra("resource")));
                     params.add(new BasicNameValuePair("cantidad", intent.getStringExtra("cantidad")));
-
+                    JSONObject json = new JSONObject();
+                    json.put("idResource",intent.getStringExtra("resource"));
+                    json.put("cantidad",intent.getStringExtra("cantidad"));
 
                     Log.d(TAG,params.toString());
 
                     response = new Intent(RESPONSE_ACTION);
                     response.putExtra(ServiceCaller.OPERACION, operation);
-                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,params));
+
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
+
                     LocalBroadcastManager.getInstance(this).sendBroadcast(response);
                 break;
 
@@ -141,15 +147,17 @@ public class ServiceCaller extends IntentService {
         return line;
     }
 
-    public String post(String posturl, List<NameValuePair> params){
+    public String post(String posturl, JSONObject json){
 
         try {
 
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(posturl);
+            httppost.setHeader("accept", "application/json");
+            httppost.setHeader("Content-type", "application/json");
             //AÑADIR PARAMETROS
 
-            httppost.setEntity(new UrlEncodedFormEntity(params));
+            httppost.setEntity(new StringEntity(json.toString())); // cambiar el formato de los datos a String (un json) <--------------
 
             //Finalmente ejecutamos enviando la info al server/
             HttpResponse resp = httpclient.execute(httppost);
@@ -157,7 +165,7 @@ public class ServiceCaller extends IntentService {
             Log.d(TAG,resp.getEntity().toString() );
 
             String text = EntityUtils.toString(ent);
-            Log.e(TAG,text);
+            Log.e(TAG ,resp.getStatusLine()+text + "<----------");
             return text;
 
         }

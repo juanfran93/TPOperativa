@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,20 +34,21 @@ public class DonationActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
         final Intent mServiceIntent = new Intent(DonationActivity.this, ServiceCaller.class);
         mServiceIntent.putExtra(ServiceCaller.OPERACION, "getresources");
-        mServiceIntent.putExtra("ruta", "getresources");
+        mServiceIntent.putExtra(ServiceCaller.RUTA, "getresources");
+
         startService(mServiceIntent);
 
         final EditText cantidadEditText = (EditText) findViewById(R.id.editText_cantidad);
 
-        Button btnConfirmar = (Button) findViewById(R.id.idbtn_confirmar);
+        Button btnConfirmar = (Button) findViewById(R.id.button_confirmarDonation);
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mServiceIntent.replaceExtras(mServiceIntent.getExtras());
                 mServiceIntent.putExtra(ServiceCaller.OPERACION, "addPackage");
-                mServiceIntent.putExtra("ruta", "addPackage");
-                mServiceIntent.putExtra("resource",recursos.get(recursosEditText.getText().toString()));
-                mServiceIntent.putExtra("cantidad",cantidadEditText.getText());
+                mServiceIntent.putExtra(ServiceCaller.RUTA, "addpackage");
+                mServiceIntent.putExtra("resource",recursos.get(recursosEditText.getText().toString()).toString());
+                mServiceIntent.putExtra("cantidad",cantidadEditText.getText().toString());
+
                 startService(mServiceIntent);
 
             }
@@ -61,27 +64,29 @@ public class DonationActivity extends AppCompatActivity {
         recursosEditText.setAdapter(adapter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void notifySuccess(String msj){
-        AlertDialog.Builder chequeo = new AlertDialog.Builder(this);
-        chequeo.setTitle("Registro de Donación");
-        chequeo.setCancelable(true);
-        chequeo.setMessage(msj);
-        chequeo.show();
-        chequeo.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Registro de Donación");
+        dialog.setCancelable(true);
+        dialog.setMessage(msj);
+        dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void onCancel(DialogInterface dialogInterface) {
-
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
             }
         });
-        backToMenu();
+        backToMenu(dialog);
 
     }
 
-    private void backToMenu() {
+    private void backToMenu(final AlertDialog.Builder dialog) {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
                 // Start the next activity
+                dialog.setCancelable(true);
                 finish();
             }
         };

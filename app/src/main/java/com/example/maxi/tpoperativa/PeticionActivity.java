@@ -42,8 +42,8 @@ public class PeticionActivity extends AppCompatActivity {
             LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
             final Intent mServiceIntent = new Intent(PeticionActivity.this, ServiceCaller.class);   //
 
-            mServiceIntent.putExtra(ServiceCaller.OPERACION, GETRESOURCES_OP);
-            mServiceIntent.putExtra(ServiceCaller.RUTA, GETRESOURCES_PATH);
+            mServiceIntent.putExtra(ServiceCaller.OPERACION, "getresources");
+            mServiceIntent.putExtra(ServiceCaller.RUTA, "getresources");
             startService(mServiceIntent);
 
         } else {

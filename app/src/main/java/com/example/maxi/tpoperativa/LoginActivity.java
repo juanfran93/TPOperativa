@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
 
     //public static final MySQL Sql = new MySQL("operativa","root","");
-    public static MySQL Sql = new MySQL("trazaapp", "juan", "juan");
+    public static MySQL Sql = new MySQL("trazaapp2", "juan", "juan");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +120,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        mEmailView.setText("moisesbueno@gmail.com");
+        mPasswordView.setText("moises");
 
 
     }
