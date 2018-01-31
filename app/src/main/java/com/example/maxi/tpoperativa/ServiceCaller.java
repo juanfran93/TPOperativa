@@ -82,10 +82,23 @@ public class ServiceCaller extends IntentService {
 
                     response = new Intent(RESPONSE_ACTION);
                     response.putExtra(ServiceCaller.OPERACION, operation);
+
                     response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
 
                     LocalBroadcastManager.getInstance(this).sendBroadcast(response);
                 break;
+
+                case "attemptlogin":
+                    params.add(new BasicNameValuePair("email",intent.getStringExtra("email")));
+                    params.add(new BasicNameValuePair("password", intent.getStringExtra("password")));
+
+                    Log.d(TAG,params.toString());
+
+                    response = new Intent(RESPONSE_ACTION);
+                    response.putExtra(ServiceCaller.OPERACION, operation);
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,params));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(response);
+                    break;
 
                 default:
                     conn.setRequestMethod("GET");

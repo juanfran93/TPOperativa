@@ -35,6 +35,7 @@ public class DonationActivity extends AppCompatActivity {
         final Intent mServiceIntent = new Intent(DonationActivity.this, ServiceCaller.class);
         mServiceIntent.putExtra(ServiceCaller.OPERACION, "getresources");
         mServiceIntent.putExtra(ServiceCaller.RUTA, "getresources");
+
         startService(mServiceIntent);
 
         final EditText cantidadEditText = (EditText) findViewById(R.id.editText_cantidad);
@@ -47,6 +48,7 @@ public class DonationActivity extends AppCompatActivity {
                 mServiceIntent.putExtra(ServiceCaller.RUTA, "addpackage");
                 mServiceIntent.putExtra("resource",recursos.get(recursosEditText.getText().toString()).toString());
                 mServiceIntent.putExtra("cantidad",cantidadEditText.getText().toString());
+
                 startService(mServiceIntent);
 
             }
