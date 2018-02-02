@@ -106,8 +106,8 @@ public class ServiceCaller extends IntentService {
                     json.put("telefono",intent.getStringExtra("telefono"));
                     json.put("ciudad",intent.getIntExtra("ciudad",-1));
                     json.put("web",intent.getStringExtra("web"));
-                    //json.put("latitud",intent.getStringExtra("latitud"));
-                    //json.put("longitud",intent.getStringExtra("longitud"));
+                    json.put("latitud",intent.getDoubleExtra("latitud", 0.00));
+                    json.put("longitud",intent.getDoubleExtra("longitud",0.00));
 
                     Log.d(TAG,json.toString());
 

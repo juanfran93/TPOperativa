@@ -161,6 +161,8 @@ public class RegisterActivity extends AppCompatActivity{
             intentL.putExtra("web",Website.getText().toString());
             intentL.putExtra("password",Password.getText().toString());
             intentL.putExtra("ciudad",Integer.getInteger(spinnerCities.getSelectedItem().toString()));
+            intentL.putExtra("longitud",2.00);
+            intentL.putExtra("latitud",2.00);
             startService(intentL);
 
         }else {
