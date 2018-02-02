@@ -3,6 +3,8 @@ package com.example.maxi.tpoperativa;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -26,6 +28,7 @@ class LocalRecieverDonacion extends BroadcastReceiver {
         this.activityDonation = activityDonation;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void onReceive(Context context, Intent intent) {
         String operation = intent.getStringExtra(ServiceCaller.OPERACION);
