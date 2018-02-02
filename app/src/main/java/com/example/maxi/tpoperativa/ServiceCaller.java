@@ -97,6 +97,27 @@ public class ServiceCaller extends IntentService {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(response);
                     break;
 
+                case "registeruser":
+                    json.put("nombre",intent.getStringExtra("nombre"));
+                    json.put("email",intent.getStringExtra("email"));
+                    json.put("password",intent.getStringExtra("password"));
+                    json.put("usuario",intent.getStringExtra("usuario"));
+                    json.put("direccion",intent.getStringExtra("direccion"));
+                    json.put("telefono",intent.getStringExtra("telefono"));
+                    json.put("ciudad",intent.getIntExtra("ciudad",-1));
+                    json.put("web",intent.getStringExtra("web"));
+                    json.put("latitud",intent.getDoubleExtra("latitud", 0.00));
+                    json.put("longitud",intent.getDoubleExtra("longitud",0.00));
+
+                    Log.d(TAG,json.toString());
+
+                    response = new Intent(RESPONSE_ACTION);
+                    response.putExtra(ServiceCaller.OPERACION, operation);
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(response);
+
+                    break;
+
                 default:
                     conn.setRequestMethod("GET");
                     conn.setDoInput(true);
