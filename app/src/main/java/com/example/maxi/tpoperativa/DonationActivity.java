@@ -1,10 +1,15 @@
 package com.example.maxi.tpoperativa;
 
 import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.util.HashMap;
 import java.util.Timer;
@@ -65,11 +71,15 @@ public class DonationActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-    public void notifySuccess(String msj){
+    public void notifySuccess(String msj, Bitmap bitmap){
+        ImageView image = new ImageView(DonationActivity.this);
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Registro de Donación");
         dialog.setCancelable(true);
         dialog.setMessage(msj);
+        dialog.setView(image);
+
+        addImageToGallery(bitmap);
         dialog.show();
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
@@ -79,6 +89,18 @@ public class DonationActivity extends AppCompatActivity {
         });
         backToMenu(dialog);
 
+    }
+
+    public void addImageToGallery(Bitmap bitmap) {
+
+        String ImagePath = MediaStore.Images.Media.insertImage(
+                getContentResolver(),
+                bitmap,
+                "demo_image",
+                "demo_image"
+        );
+
+        Uri URI = Uri.parse(ImagePath);
     }
 
     private void backToMenu(final AlertDialog.Builder dialog) {
