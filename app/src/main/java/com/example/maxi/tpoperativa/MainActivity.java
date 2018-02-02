@@ -140,6 +140,12 @@ public class MainActivity extends AppCompatActivity
                 intentActivity.putExtra("Persona",user);
                 startActivity(intentActivity);
                 break;
+            case R.id.nav_recibirRecurso :
+                intentActivity = new Intent(MainActivity.this, RecibirActivity.class);
+                intentActivity.putExtra("Usuario",user);
+                startActivity(intentActivity);
+
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

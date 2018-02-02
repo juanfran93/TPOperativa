@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@android:color/holo_orange_light"
+    android:minHeight="181dp"
+    tools:context="com.example.maxi.tpoperativa.RecibirActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/colorAccent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="151dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="163dp"
+            tools:layout_editor_absoluteY="26dp">
+
+            <Spinner
+                android:id="@+id/peticiones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp" />
+
+            <LinearLayout
+                android:id="@+id/VLayout_paquete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:background="@color/colorFondo"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/datos_donanteView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorFondo2"
+                    android:text="Paquete"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recursotextView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Recurso:" />
+
+                <TextView
+                    android:id="@+id/cantidad_textView12"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cantidad:" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/VLayout_donante"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:background="@color/colorFondo"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/datos_donanteView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorFondo2"
+                    android:text="Datos donante"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/nombre_textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Nombre:" />
+
+                <TextView
+                    android:id="@+id/direccion_textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dirección:" />
+
+                <TextView
+                    android:id="@+id/telefono_textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Teléfono:" />
+
+                <TextView
+                    android:id="@+id/website_textView9"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Website:" />
+
+                <TextView
+                    android:id="@+id/ciudad_textView10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Ciudad:" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/VLayout_escaneado"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/HLayout_escaneado"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/escanear_button2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableRight="@drawable/ic_menu_camera"
+                        android:text="Escanear QR: "
+                        android:textAllCaps="false" />
+
+                    <CheckBox
+                        android:id="@+id/escaneado_checkBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Escaneado" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/confirm_button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:drawableRight="@android:drawable/ic_menu_add"
+                android:elevation="0dp"
+                android:text="Confirmar" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
