@@ -44,7 +44,7 @@ public class ServiceCaller extends IntentService {
     public static final String OPERACION = "OPERATION_SERVICE";
     public static final String RUTA = "RUTA";
 
-    final String BASE_URL = "http://192.168.1.36:8080/TrazaAppServer/trazaapp/";
+    final String BASE_URL = "http://192.168.1.42:8080/TrazaAppServer/trazaapp/";
 
     static final String TAG = ServiceCaller.class.getCanonicalName();
 
@@ -74,6 +74,7 @@ public class ServiceCaller extends IntentService {
                     //preparacion para envio de json
                     json.put("idResource",intent.getStringExtra("resource"));
                     json.put("cantidad",intent.getStringExtra("cantidad"));
+                    //json.put("id_user",intent.getIntExtra("id_user",-1));
 
                     Log.d(TAG,json.toString());
 

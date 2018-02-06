@@ -3,6 +3,7 @@ package com.example.maxi.tpoperativa;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +38,7 @@ public class LocalReciever_Recibir extends BroadcastReceiver {
                     for(int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonRec = jsonArray.getJSONObject(i);
                         Recursos.put(jsonRec.getInt("id_peticion"),jsonRec.getString("recurso"));
+                        Log.d("CHUPALA", jsonRec.getString("recurso"));
                     }
 
                 }catch (JSONException e) {
@@ -44,6 +46,7 @@ public class LocalReciever_Recibir extends BroadcastReceiver {
                 }
 
                 activity.setSpinnerResource(Recursos);
+
             break;
         }
 
