@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_donarRecurso"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_send"
             android:title="Donar Recurso" />
         <item
             android:id="@+id/nav_nuevaPeticion"
@@ -18,6 +18,10 @@
             android:id="@+id/nav_verRecurso"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Ver Recursos" />
+        <item
+            android:id="@+id/nav_recibirRecurso"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="Recibir Recurso" />
     </group>
 
     <item android:title="Communicate">

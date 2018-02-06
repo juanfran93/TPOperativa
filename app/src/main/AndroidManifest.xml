@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -62,11 +62,14 @@
 
         <uses-library android:name="com.google.android.maps" />
 
-        <activity android:name=".DonationActivity"></activity>
-        <activity android:name=".PeticionActivity"></activity>
+        <activity android:name=".DonationActivity" />
+        <activity android:name=".PeticionActivity" />
+
         <service
-            android:name="ServiceCaller"
+            android:name=".ServiceCaller"
             android:exported="false" />
+
+        <activity android:name=".RecibirActivity"></activity>
     </application>
 
 </manifest>
