@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import java.util.HashMap;
 
 import Funcionalidad.Persona;
+import Funcionalidad.Peticion;
 
 public class RecibirActivity extends AppCompatActivity {
 
@@ -27,9 +29,14 @@ public class RecibirActivity extends AppCompatActivity {
     public static final String GET_OWN_PETITIONS_PATH = "getownpetitions";
     public static final String GET_USERINFO_OP = "getuserinfo";
     public static final String GET_USERINFO_PATH = "getuserinfo";
+    public static final String CONFIRM_OP = "sendpackage";
+    public static final String CONFIRM_PATH = "sendpackage";
 
 
     private HashMap<Integer, String> recursos;
+
+    private HashMap<Integer,Integer> petitCant;
+
     private Spinner spinnerResource;
 
     private TextView recurso_tv;
@@ -40,11 +47,15 @@ public class RecibirActivity extends AppCompatActivity {
     private TextView website_tv;
     private TextView ciudad_tv;
 
+    private Button escanearButton;
+    private  Button confirmButton;
 
     private Persona persona;
 
     private Persona donante = new Persona();
     private Integer cantidad;
+
+    private HashMap<Integer, Peticion> peticiones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +63,9 @@ public class RecibirActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recibir);
 
         spinnerResource = (Spinner) findViewById(R.id.peticiones);
+
+        escanearButton = (Button) findViewById(R.id.escanear_button2);
+        confirmButton = (Button) findViewById(R.id.confirm_button3);
 
         recurso_tv = (TextView) findViewById(R.id.recursotextView11);
         cantidad_tv = (TextView) findViewById(R.id.cantidad_textView12);
@@ -61,14 +75,12 @@ public class RecibirActivity extends AppCompatActivity {
         website_tv = (TextView) findViewById(R.id.website_textView9);
         ciudad_tv = (TextView) findViewById(R.id.ciudad_textView10);
 
-
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(PeticionActivity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
         if (networkInfo != null && networkInfo.isConnected()) {
 
             this.persona = (Persona)getIntent().getExtras().getSerializable("Usuario");
-            setTextViews();
 
             Intent intent = getIntent();
 
@@ -85,17 +97,37 @@ public class RecibirActivity extends AppCompatActivity {
 
                     final Intent mServiceIntentSpinner = new Intent(RecibirActivity.this, ServiceCaller.class);
                     mServiceIntentSpinner.putExtra(ServiceCaller.OPERACION, GET_USERINFO_OP);
-                    mServiceIntentSpinner.putExtra(ServiceCaller.RUTA, GET_USERINFO_PATH+"/"+(mServiceIntent.getIntExtra("id_origen",-1)));
+                    mServiceIntentSpinner.putExtra(ServiceCaller.RUTA, GET_USERINFO_PATH+"/"+(getPeticiones().get(1)).getId_origen());
                     startService(mServiceIntentSpinner);
-
-                    //getDonante().setId(mServiceIntent.getIntExtra("id_origen,-1",-1));
-                    //
-
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
 
+                }
+            });
+
+            escanearButton.setOnClickListener(new AdapterView.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+
+            confirmButton.setOnClickListener(new AdapterView.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    final Intent mServiceIntentCONFIRM = new Intent(RecibirActivity.this, ServiceCaller.class);   //
+
+                    mServiceIntentCONFIRM.putExtra(ServiceCaller.OPERACION, CONFIRM_OP);
+                    //todo SACAR HARDCODE
+                    mServiceIntentCONFIRM.putExtra("id_package",(getPeticiones().get(1)).getId_package());
+                    mServiceIntentCONFIRM.putExtra("id_resource",(getPeticiones().get(1)).getId_recurso());
+                    mServiceIntentCONFIRM.putExtra("cantidad",(getPeticiones().get(1)).getCantidad());
+                    mServiceIntentCONFIRM.putExtra("id_origen",(getPeticiones().get(1)).getId_origen());
+                    mServiceIntentCONFIRM.putExtra("id_destino",persona.getId());
+                    mServiceIntentCONFIRM.putExtra(ServiceCaller.RUTA, CONFIRM_PATH);
+                    startService(mServiceIntentCONFIRM);
                 }
             });
 
@@ -131,8 +163,15 @@ public class RecibirActivity extends AppCompatActivity {
         this.persona = persona;
     }
 
-    private void setTextViews(){
-        nombre_tv.append(" "+persona.getNombre());
+    public void setTextViews(){
+       // nombre_tv.append(" "+persona.getNombre());
+
+        nombre_tv.setText("Nombre: "+getDonante().getNombre());
+        direccion_tv.setText("Direccion: "+getDonante().getDireccion());
+        telefono_tv.setText("Telefono: "+getDonante().getTelefono());
+        website_tv.setText("Website: "+getDonante().getWeb());
+        ciudad_tv.setText("Ciudad: "+getDonante().getCiudad());
+
 
     }
 
@@ -153,4 +192,21 @@ public class RecibirActivity extends AppCompatActivity {
     }
 
 
+    public void setPetitCant(HashMap<Integer, Integer> petitCant) {
+        this.petitCant = petitCant;
+    }
+
+
+    public HashMap<Integer, Integer> getPetitCant() {
+        return petitCant;
+    }
+
+
+    public HashMap<Integer, Peticion> getPeticiones() {
+        return peticiones;
+    }
+
+    public void setPeticiones(HashMap<Integer, Peticion> peticiones) {
+        this.peticiones = peticiones;
+    }
 }
