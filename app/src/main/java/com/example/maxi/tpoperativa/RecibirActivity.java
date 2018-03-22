@@ -38,7 +38,7 @@ public class RecibirActivity extends AppCompatActivity {
     private HashMap<Integer,Integer> petitCant;
 
     private Spinner spinnerResource;
-
+ 
     private TextView recurso_tv;
     private TextView cantidad_tv;
     private TextView nombre_tv;
@@ -122,10 +122,11 @@ public class RecibirActivity extends AppCompatActivity {
 
                     mServiceIntentCONFIRM.putExtra(ServiceCaller.OPERACION, CONFIRM_OP);
                     //todo SACAR HARDCODE
-                    mServiceIntentCONFIRM.putExtra("id_package",(getPeticiones().get(1)).getId_package());
-                    mServiceIntentCONFIRM.putExtra("id_resource",(getPeticiones().get(1)).getId_recurso());
-                    mServiceIntentCONFIRM.putExtra("cantidad",(getPeticiones().get(1)).getCantidad());
-                    mServiceIntentCONFIRM.putExtra("id_origen",(getPeticiones().get(1)).getId_origen());
+                    Peticion peti= getPeticiones().get(1);
+                    mServiceIntentCONFIRM.putExtra("id_package",(peti.getId_package()));
+                    mServiceIntentCONFIRM.putExtra("id_resource",(peti.getId_recurso()));
+                    mServiceIntentCONFIRM.putExtra("cantidad",(peti.getCantidad()));
+                    mServiceIntentCONFIRM.putExtra("id_origen",(peti.getId_origen()));
                     mServiceIntentCONFIRM.putExtra("id_destino",persona.getId());
                     mServiceIntentCONFIRM.putExtra(ServiceCaller.RUTA, CONFIRM_PATH);
                     startService(mServiceIntentCONFIRM);
@@ -172,6 +173,9 @@ public class RecibirActivity extends AppCompatActivity {
         telefono_tv.setText("Telefono: "+getDonante().getTelefono());
         website_tv.setText("Website: "+getDonante().getWeb());
         ciudad_tv.setText("Ciudad: "+getDonante().getCiudad());
+
+        getCantidad();
+
 
 
     }
