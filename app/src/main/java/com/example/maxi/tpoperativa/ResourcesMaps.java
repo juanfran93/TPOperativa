@@ -1,17 +1,23 @@
 package com.example.maxi.tpoperativa;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,26 +32,29 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
-import Funcionalidad.Elemento;
 import Funcionalidad.Persona;
 import Funcionalidad.PointInfo;
 import TareasAsincronas.ResultSetTask;
-import TareasAsincronas.SpinnerTask;
 
 public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
-    private Elemento element;
+    private Persona persona;
     //Agregar actualizar en la tabla que persona tiene ese recurso
-    private Spinner spinnerCities;
-    private Spinner spinnerTrack;
+    private Spinner spinnerResources;
+    private Spinner spinnerPackages;
     private String textSpinner;
     private String track;
-    private Vector<PointInfo> pointInfo = new Vector<PointInfo>();
+    private ArrayList<PointInfo> pointInfo = new ArrayList<PointInfo>();
     private boolean selected;
+    private HashMap<String,Integer> recursos;
+
+    private LocalRecieverMaps reciever = new LocalRecieverMaps(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,74 +64,99 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        this.element = (Elemento)getIntent().getExtras().getSerializable("Persona");
+        this.persona = (Persona) getIntent().getExtras().getSerializable("Persona");
 
-        this.spinnerCities = (Spinner) findViewById(R.id.spinner_resource);
-        this.spinnerTrack  = (Spinner) findViewById(R.id.spinner_track);
-        //Genero la query para cargar el spinner
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(PeticionActivity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        String query = "SELECT name " +
+        this.spinnerResources = (Spinner) findViewById(R.id.spinner_resource);
+        this.spinnerPackages = (Spinner) findViewById(R.id.spinner_track);
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+            Intent intent = getIntent();
+
+            LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
+            final Intent mServiceIntent = new Intent(ResourcesMaps.this, ServiceCaller.class);   //
+
+            mServiceIntent.putExtra(ServiceCaller.OPERACION, "getownresources");
+            mServiceIntent.putExtra(ServiceCaller.RUTA, "getownresources" + "/" + persona.getId());
+            startService(mServiceIntent);
+            //Genero la query para cargar el spinner
+
+        /*String query = "SELECT name " +
                 "FROM resource_route as RR INNER JOIN resources as R ON RR.id_resource = R.id " +
                 "WHERE id_origen = " + ((Persona)element).getId() + " OR id_destino = " + ((Persona)element).getId()+
                 " GROUP BY name " +
                 "ORDER BY name";
-        updateSpinner(this.spinnerCities,query,"name");
+        updateSpinner(this.spinnerResources,query,"name");
 
-        this.textSpinner = "";
-        this.spinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        this.textSpinner = ""; */
+            this.spinnerResources.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            public void onItemSelected(AdapterView<?> parentView,View selectedItemView, int position, long id) {
-                selected = false;
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    selected = false;
 
-                String text = (String) spinnerCities.getSelectedItem();
-                String query = " SELECT track_code "+
+                    String resource = (String) spinnerResources.getSelectedItem();
+                    mServiceIntent.putExtra(ServiceCaller.OPERACION, "getownpackagebyresource");
+                    mServiceIntent.putExtra(ServiceCaller.RUTA, "getownpackagebyresource");
+                    mServiceIntent.putExtra("user", persona.getId());
+                    mServiceIntent.putExtra("resource",recursos.get(resource));
+                    startService(mServiceIntent);
+
+            /*                String query = " SELECT track_code "+
                         " FROM RESOURCES AS R INNER JOIN resource_route AS RR ON R.id = RR.id_resource"+
-                        " WHERE R.name = '"+text+"'" + " AND (id_origen = " + ((Persona)element).getId() + " OR id_destino = " + ((Persona)element).getId() +
+                        " WHERE R.name = '"+text+"'" + " AND (id_origen = " + persona.getId() + " OR id_destino = " + persona.getId() +
                         ") GROUP BY RR.TRACK_CODE ";
-                updateSpinner(spinnerTrack,query,"track_code");
+                updateSpinner(spinnerPackages,query,"track_code");
                 selected = true;
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                textSpinner = "";
-            };
-        });
-        this.spinnerTrack.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            public void onItemSelected(AdapterView<?> parentView,View selectedItemView, int position, long id) {
-                if(selected){
-                    String text = (String) spinnerTrack.getSelectedItem();
-                    track = text;
-                    mMap.clear();
-                    onMapReady(mMap);
+                */
                 }
 
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                track = "";
-            };
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    textSpinner = "";
+                }
+            });
+
+            this.spinnerPackages.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                        Integer pack = (Integer) spinnerPackages.getSelectedItem();
+                        mServiceIntent.putExtra(ServiceCaller.OPERACION, "getpackageroute");
+                        mServiceIntent.putExtra(ServiceCaller.RUTA, "getpackageroute/" + pack);
+                        startService(mServiceIntent);
+                        onMapReady(mMap);
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    track = "";
+                }
+
+                ;
+            });
+
+        }
 
 
-    }
-
-
-    //Spinner de los nombres de recursos
-    private void updateSpinner(Spinner spinner, String query,String column){
+        //Spinner de los nombres de recursos
+    /*private void updateSpinner(Spinner spinner, String query,String column){
 
 
         SpinnerTask citiesTask = new SpinnerTask(spinner,ResourcesMaps.this,column);
         citiesTask.execute(query);
         spinner = citiesTask.getSpinnerCities();
-
+    }
+    */
     }
 
     //Si el mapa esta listo agrego los puntos
     public void onMapReady(GoogleMap googleMap) {
         Log.d("MapReady", "Ingresando");
         mMap = googleMap;
+        mMap.clear();
+        /*
         String query = "SELECT RR.ID, RR.ID_RESOURCE, RR.ID_ORIGEN, O.NAME as ORI_NAME, RR.ID_DESTINO, D.NAME AS DES_NAME, D.ROLE_ID AS DES_ROLE,\n" +
                 "       D.ADDRESS AS DES_ADDRESS, RR.LATITUDE, RR.LONGITUDE, DATE_FORMAT(RR.DATE,'%d/%m/%Y') AS date\n" +
                 " FROM   RESOURCE_ROUTE AS RR, USERS AS O, USERS AS D, RESOURCES AS R \n" +
@@ -135,16 +169,19 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
 
         ResultSetTask task = new ResultSetTask(this, mensaje);
         int count = 1;
+
         try {
             task.execute(query);
-            ResultSet result = task.get();
-            while (result.next()) {
-                PointInfo point = generarPoint(result);
-                changeLocationIdem(point);
-                pointInfo.add(point);
-                addPointIntoMap(point, count);
+            ResultSet result = task.get();*/
+            int count = 1;
+            for(PointInfo p : pointInfo) {
+                //PointInfo point = generarPoint(result);
+                changeLocationIdem(p);
+                //pointInfo.add(p);
+                addPointIntoMap(p, count);
                 count++;
             }
+            /*
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -152,8 +189,11 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        */
     }
     //Genero el punto con la informacion necesaria
+    /*
     private PointInfo generarPoint(ResultSet result) throws SQLException {
         int id              = result.getInt("id");
         String id_resource  = result.getString("id_resource");
@@ -169,7 +209,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         return new PointInfo(id,id_resource,id_origen,origen_name,id_destino,destino_name,destino_role,dest_address,latitude,longitude,date);
 
     }
-
+*/
     //Cambio la ventana del punto con la info
     private void addMensaje() {
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -182,14 +222,14 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
             public View getInfoContents(Marker marker) {
                 String name = marker.getTitle();
                 boolean exito = false;
-                PointInfo point = pointInfo.elementAt(0);
+                PointInfo point = pointInfo.get(0);
                 int count = 0;
                 while (!exito){
                     if(String.valueOf(point.getId()).equals(name)){
                         exito = true;
                     }else{
                         count++;
-                        point = pointInfo.elementAt(count);
+                        point = pointInfo.get(count);
                     }
                 }
                 View v = getLayoutInflater().inflate(R.layout.info_windows_marker, null);
@@ -269,5 +309,24 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         return returnedBitmap;
     }
 
+    public void setRecursos(HashMap<String, Integer> recursos) {
+        this.recursos = recursos;
+        String[] recursosList = recursos.keySet().toArray(new String[recursos.keySet().size()]);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this,android.R.layout.simple_list_item_1,recursosList);
+        spinnerResources.setAdapter(adapter);
+    }
+
+    public void setPackages(ArrayList<Integer> packages) {
+        Integer[] packagesList = packages.toArray(new Integer[packages.size()]);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>
+                (this,android.R.layout.simple_list_item_1,packagesList);
+        spinnerPackages.setAdapter(adapter);
+    }
+
+    public void setMaps(ArrayList<PointInfo> nodos) {
+        pointInfo = nodos;
+        onMapReady(mMap);
+    }
 }
 

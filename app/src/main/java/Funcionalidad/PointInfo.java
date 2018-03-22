@@ -6,10 +6,10 @@ package Funcionalidad;
 
 public class PointInfo {
     private int id; //Numero de movimiento
-    private String id_resource; //Id del recurso
-    private String id_origen; //Id del usuario de origen
+    private int id_resource; //Id del recurso
+    private int id_origen; //Id del usuario de origen
     private String origen_name;
-    private String id_destino;//Id persona destno
+    private int id_destino;//Id persona destno
     private String destino_name;//Nombre persona destino
     private int destino_role;//Rol del destino, usuario comun o admin
     private String destino_address;//Direccion del destino
@@ -18,11 +18,11 @@ public class PointInfo {
     private String date;
 
 
-    public PointInfo(int id, String id_resource, String id_origen, String origen_name, String id_destino,
+    public PointInfo(int id,int id_origen, String origen_name, int id_destino,
                      String destino_name, int destino_role, String dest_address, double latitude, double longitude, String date) {
 
         this.id              = id;
-        this.id_resource     = id_resource;
+        this.id_resource     = 0;
         this.id_origen       = id_origen;
         this.origen_name     = origen_name;
         this.id_destino      = id_destino;
@@ -50,19 +50,19 @@ public class PointInfo {
         this.id = id;
     }
 
-    public String getId_resource() {
+    public int getId_resource() {
         return id_resource;
     }
 
-    public void setId_resource(String id_resource) {
+    public void setId_resource(int id_resource) {
         this.id_resource = id_resource;
     }
 
-    public String getId_origen() {
+    public int getId_origen() {
         return id_origen;
     }
 
-    public void setId_origen(String id_origen) {
+    public void setId_origen(int id_origen) {
         this.id_origen = id_origen;
     }
 
@@ -74,11 +74,11 @@ public class PointInfo {
         this.origen_name = origen_name;
     }
 
-    public String getId_destino() {
+    public int getId_destino() {
         return id_destino;
     }
 
-    public void setId_destino(String id_destino) {
+    public void setId_destino(int id_destino) {
         this.id_destino = id_destino;
     }
 
