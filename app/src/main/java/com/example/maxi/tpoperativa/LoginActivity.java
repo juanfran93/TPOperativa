@@ -36,6 +36,7 @@ import android.widget.Toast;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import Funcionalidad.MySQL;
@@ -323,6 +324,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mEmailView.setAdapter(adapter);
     }
+
+
 
 
     private interface ProfileQuery {

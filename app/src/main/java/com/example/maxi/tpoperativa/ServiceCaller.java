@@ -44,7 +44,7 @@ public class ServiceCaller extends IntentService {
     public static final String OPERACION = "OPERATION_SERVICE";
     public static final String RUTA = "RUTA";
 
-    final String BASE_URL = "http://192.168.1.36:8080/TrazaAppServer/trazaapp/";
+    final String BASE_URL = "http://192.168.1.48:8080/TrazaAppServer/trazaapp/";
 
     static final String TAG = ServiceCaller.class.getCanonicalName();
 
@@ -116,6 +116,17 @@ public class ServiceCaller extends IntentService {
                     response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(response);
 
+                    break;
+                case "getownpackagebyresource" :
+                    json.put("user",intent.getIntExtra("user",-1));
+                    json.put("resource",intent.getIntExtra("resource",-1));
+
+                    Log.d(TAG,json.toString());
+
+                    response = new Intent(RESPONSE_ACTION);
+                    response.putExtra(ServiceCaller.OPERACION, operation);
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(response);
                     break;
 
                 default:
