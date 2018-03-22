@@ -31,7 +31,7 @@ public class MySQL{
         this.mysqluser     = user;
         this.mysqlpass     = pass;
         this.mysqldateBase = db;
-        this.mysqlIP       = "192.168.1.36";
+        this.mysqlIP       = "192.168.1.42";
         this.mysqlPort     = "3306";
     }
 

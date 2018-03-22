@@ -54,6 +54,8 @@ public class DonationActivity extends AppCompatActivity {
                 mServiceIntent.putExtra(ServiceCaller.RUTA, "addpackage");
                 mServiceIntent.putExtra("resource",recursos.get(recursosEditText.getText().toString()).toString());
                 mServiceIntent.putExtra("cantidad",cantidadEditText.getText().toString());
+                //TODO AGREGEGAR EL USUARIO ACA Y EN EL SERVICE CALLER
+                // mServiceIntent.putExtra("id_user",)
 
                 startService(mServiceIntent);
 

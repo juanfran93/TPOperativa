@@ -74,6 +74,7 @@ public class ServiceCaller extends IntentService {
                     //preparacion para envio de json
                     json.put("idResource",intent.getStringExtra("resource"));
                     json.put("cantidad",intent.getStringExtra("cantidad"));
+                    //json.put("id_user",intent.getIntExtra("id_user",-1));
 
                     Log.d(TAG,json.toString());
 
@@ -127,6 +128,22 @@ public class ServiceCaller extends IntentService {
                     response.putExtra(ServiceCaller.OPERACION, operation);
                     response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
                     LocalBroadcastManager.getInstance(this).sendBroadcast(response);
+                    break;
+
+                case "sendpackage":
+                    json.put("id_package",intent.getIntExtra("id_package",-1));
+                    json.put("id_resource",intent.getIntExtra("id_resource",-1));
+                    json.put("cantidad",intent.getIntExtra("cantidad",-1));
+                    json.put("id_origen",intent.getIntExtra("id_origen",-1));
+                    json.put("id_destino",intent.getIntExtra("id_destino",-1));
+
+                    Log.d(TAG,json.toString());
+
+                    response = new Intent(RESPONSE_ACTION);
+                    response.putExtra(ServiceCaller.OPERACION, operation);
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(response);
+
                     break;
 
                 default:
