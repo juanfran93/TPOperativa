@@ -49,6 +49,7 @@ public class LocalReciverPeticion extends BroadcastReceiver {
                 }
 
                 peticionAct.setAutoTextResources(Recursos);
+                peticionAct.setRecursos(Recursos);
                 break;
 
 

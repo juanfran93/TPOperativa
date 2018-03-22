@@ -107,6 +107,7 @@ public class RecibirActivity extends AppCompatActivity {
                 }
             });
 
+            // TODO escanear Buton
             escanearButton.setOnClickListener(new AdapterView.OnClickListener() {
                 @Override
                 public void onClick(View view) {
