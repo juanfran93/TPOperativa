@@ -145,6 +145,18 @@ public class ServiceCaller extends IntentService {
                     LocalBroadcastManager.getInstance(this).sendBroadcast(response);
 
                     break;
+                case "addpeticion" :
+                    json.put("idResource",intent.getIntExtra("idResource",-1));
+                    json.put("cantidad",intent.getIntExtra("cantidad",-1));
+                    json.put("idUser",intent.getIntExtra("idUser",-1));
+
+                    Log.d(TAG,json.toString());
+
+                    response = new Intent(RESPONSE_ACTION);
+                    response.putExtra(ServiceCaller.OPERACION, operation);
+                    response.putExtra(RESPONSE, this.post(BASE_URL + ruta,json));
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(response);
+                    break;
 
                 default:
                     conn.setRequestMethod("GET");

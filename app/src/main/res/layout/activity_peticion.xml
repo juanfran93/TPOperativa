@@ -13,9 +13,10 @@
         android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.01999998">
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:id="@+id/Layout"
@@ -32,8 +33,8 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@android:color/holo_blue_bright"
-                android:popupBackground="@color/colorAccent"
-                android:text="Recursos" />
+                android:hint="Recurso"
+                android:popupBackground="@color/colorAccent" />
 
             <EditText
                 android:id="@+id/txt_Cantidad"
@@ -46,12 +47,20 @@
                 android:ems="10"
                 android:hint="Cantidad"
                 android:inputType="number"
-                android:text="Cantidad"
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="20dp" />
+
+            <Button
+                android:id="@+id/solicitar_Button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Solicitar"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="254dp" />
 
         </LinearLayout>
 
 
     </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

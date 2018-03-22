@@ -23,8 +23,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
-                android:text="AutoCompleteTextView"
-                tools:text="Tipo de recurso" />
+                android:hint="Recurso a donar" />
 
             <EditText
                 android:id="@+id/editText_cantidad"
@@ -34,9 +33,9 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
                 android:ems="10"
+                android:hint="Cantidad"
                 android:inputType="number"
-                android:selectAllOnFocus="false"
-                tools:text="Cantidad del recurso" />
+                android:selectAllOnFocus="false" />
 
             <Button
                 android:id="@+id/button_confirmarDonation"
