@@ -16,6 +16,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+
 import java.util.HashMap;
 
 import Funcionalidad.Persona;
@@ -47,8 +49,11 @@ public class RecibirActivity extends AppCompatActivity {
     private TextView website_tv;
     private TextView ciudad_tv;
 
+    private boolean escaneado;
     private Button escanearButton;
     private  Button confirmButton;
+
+    private IntentIntegrator integrator;
 
     private Persona persona;
 
@@ -66,6 +71,7 @@ public class RecibirActivity extends AppCompatActivity {
 
         escanearButton = (Button) findViewById(R.id.escanear_button2);
         confirmButton = (Button) findViewById(R.id.confirm_button3);
+        confirmButton.setEnabled(false);
 
         recurso_tv = (TextView) findViewById(R.id.recursotextView11);
         cantidad_tv = (TextView) findViewById(R.id.cantidad_textView12);
@@ -106,12 +112,18 @@ public class RecibirActivity extends AppCompatActivity {
 
                 }
             });
+            this.integrator = new IntentIntegrator(this);
 
             // TODO escanear Buton
             escanearButton.setOnClickListener(new AdapterView.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    integrator.initiateScan();
+                    if (isEscaneado()) {
+                        confirmButton.setEnabled(true);
 
+
+                    }
                 }
             });
 
@@ -138,6 +150,7 @@ public class RecibirActivity extends AppCompatActivity {
         }
 
     }
+
 
     public void setSpinnerResource(HashMap<Integer,String> recursos){
         this.recursos = recursos;
@@ -213,5 +226,13 @@ public class RecibirActivity extends AppCompatActivity {
 
     public void setPeticiones(HashMap<Integer, Peticion> peticiones) {
         this.peticiones = peticiones;
+    }
+
+    public boolean isEscaneado() {
+        return escaneado;
+    }
+
+    public void setEscaneado(boolean escaneado) {
+        this.escaneado = escaneado;
     }
 }
