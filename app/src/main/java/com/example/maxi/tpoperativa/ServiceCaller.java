@@ -44,7 +44,7 @@ public class ServiceCaller extends IntentService {
     public static final String OPERACION = "OPERATION_SERVICE";
     public static final String RUTA = "RUTA";
 
-    final String BASE_URL = "http://192.168.1.48:8080/TrazaAppServer/trazaapp/";
+    final String BASE_URL = "http://192.168.1.44:8080/TrazaAppServer/trazaapp/";
 
     static final String TAG = ServiceCaller.class.getCanonicalName();
 
