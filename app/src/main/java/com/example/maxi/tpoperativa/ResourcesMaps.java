@@ -64,7 +64,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        this.persona = (Persona) getIntent().getExtras().getSerializable("Persona");
+        this.persona = (Persona) getIntent().getExtras().getSerializable("Usuario");
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(PeticionActivity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

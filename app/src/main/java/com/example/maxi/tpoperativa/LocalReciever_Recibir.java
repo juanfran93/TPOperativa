@@ -34,9 +34,9 @@ public class LocalReciever_Recibir extends BroadcastReceiver {
 
         switch (operation){
             case RecibirActivity.GET_OWN_PETITIONS_OP :
+
                 HashMap<Integer,String> Recursos = new HashMap<>();
                 HashMap<Integer,Integer> petitCant = new HashMap<>();
-
                 HashMap<Integer, Peticion> peticiones = new HashMap<>();
                 try {
                     JSONObject json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
@@ -85,8 +85,20 @@ public class LocalReciever_Recibir extends BroadcastReceiver {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                break;
+            case "sendpackage":
+                int status = 0;
+                String mensaje = new String();
+                try{
+                    JSONObject json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
+                    status = json.getInt("status");
+                    mensaje = json.getString("mensaje");
 
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                if(status == 200)
+                activity.notifySuccess(mensaje);
                 break;
         }
 

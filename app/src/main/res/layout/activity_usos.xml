@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.maxi.tpoperativa.UsosActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:backgroundTint="@color/colorAccent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="151dp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorAccent"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="163dp"
+            tools:layout_editor_absoluteY="26dp">
+
+            <TextView
+                android:id="@+id/resource_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Recurso :" />
+
+            <Spinner
+                android:id="@+id/resource_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" />
+
+            <TextView
+                android:id="@+id/package_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Paquete :" />
+
+            <Spinner
+                android:id="@+id/package_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/VLayout_paquete"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="25dp"
+                android:background="@color/colorFondo"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/datos_donanteView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorFondo2"
+                    android:text="Paquete"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/recursotextView11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Recurso:" />
+
+                <TextView
+                    android:id="@+id/cantidad_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cantidad total:" />
+
+                <TextView
+                    android:id="@+id/cantidad_enUso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cantidad en uso:" />
+            </LinearLayout>
+
+
+            <RadioGroup
+                android:id="@+id/opciones"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/donar_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Donar" />
+
+                <RadioButton
+                    android:id="@+id/usar_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Utilizar" />
+
+                <RadioButton
+                    android:id="@+id/eliminar_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onRadioButtonClicked"
+                    android:text="Dar de baja" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/cantidad_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Cantidad a donar" />
+
+            <Spinner
+                android:id="@+id/cantidad_spinner"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp" />
+
+            <CheckBox
+                android:id="@+id/enUso_check"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="El objeto estaba en uso" />
+
+            <Button
+                android:id="@+id/confirm_button3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@android:drawable/ic_menu_add"
+                android:elevation="0dp"
+                android:text="Confirmar" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
+
+

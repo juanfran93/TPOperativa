@@ -22,6 +22,9 @@
             android:id="@+id/nav_recibirRecurso"
             android:icon="@android:drawable/ic_input_add"
             android:title="Recibir Recurso" />
+        <item
+            android:id="@+id/nav_UsosRecurso"
+            android:title="Actualizar estado de paquetes" />
     </group>
 
     <item android:title="Communicate">

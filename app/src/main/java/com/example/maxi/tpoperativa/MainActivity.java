@@ -137,15 +137,18 @@ public class MainActivity extends AppCompatActivity
                 //LLamado a elegir recurso primero y despues mostrar en mapa
                 //Intent mainActivity = new Intent(MainActivity.this,MapsActivity.class);
                 intentActivity = new Intent(MainActivity.this,ResourcesMaps.class);
-                intentActivity.putExtra("Persona",user);
+                intentActivity.putExtra("Usuario",user);
                 startActivity(intentActivity);
                 break;
             case R.id.nav_recibirRecurso :
                 intentActivity = new Intent(MainActivity.this, RecibirActivity.class);
                 intentActivity.putExtra("Usuario",user);
                 startActivity(intentActivity);
-
                 break;
+            case R.id.nav_UsosRecurso :
+                intentActivity = new Intent(MainActivity.this, UsosActivity.class);
+                intentActivity.putExtra("Usuario",user);
+                startActivity(intentActivity);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

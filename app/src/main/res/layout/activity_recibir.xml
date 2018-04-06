@@ -145,12 +145,13 @@
                         android:text="Escanear QR: "
                         android:textAllCaps="false" />
 
-                    <CheckBox
-                        android:id="@+id/escaneado_checkBox"
+                    <ImageView
+                        android:id="@+id/scannedImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
                         android:layout_weight="1"
-                        android:text="Escaneado" />
+                        app:srcCompat="@android:drawable/ic_delete" />
 
                 </LinearLayout>
 
