@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -72,7 +73,8 @@
             android:name=".ServiceCaller"
             android:exported="false" />
 
-        <activity android:name=".RecibirActivity"></activity>
+        <activity android:name=".RecibirActivity" />
+        <activity android:name=".UsosActivity"></activity>
     </application>
 
 </manifest>

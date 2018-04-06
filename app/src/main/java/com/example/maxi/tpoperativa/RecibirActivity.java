@@ -1,9 +1,14 @@
 package com.example.maxi.tpoperativa;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,13 +17,16 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.HashMap;
+import java.util.StringTokenizer;
 
 import Funcionalidad.Persona;
 import Funcionalidad.Peticion;
@@ -49,7 +57,6 @@ public class RecibirActivity extends AppCompatActivity {
     private TextView website_tv;
     private TextView ciudad_tv;
 
-    private boolean escaneado;
     private Button escanearButton;
     private  Button confirmButton;
 
@@ -59,6 +66,9 @@ public class RecibirActivity extends AppCompatActivity {
 
     private Persona donante = new Persona();
     private Integer cantidad;
+    private Integer idPackageActual;
+
+    private ImageView scannedImage;
 
     private HashMap<Integer, Peticion> peticiones;
 
@@ -66,6 +76,8 @@ public class RecibirActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recibir);
+
+        scannedImage = (ImageView) findViewById(R.id.scannedImage);
 
         spinnerResource = (Spinner) findViewById(R.id.peticiones);
 
@@ -84,14 +96,24 @@ public class RecibirActivity extends AppCompatActivity {
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(PeticionActivity.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
+        /* permiso para utilizacion de la camara para escanear */
+        if(ContextCompat.checkSelfPermission(RecibirActivity.this,
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(RecibirActivity.this,
+                    new String[]{Manifest.permission.CAMERA},
+                    1);
+        }
+
+
         if (networkInfo != null && networkInfo.isConnected()) {
 
             this.persona = (Persona)getIntent().getExtras().getSerializable("Usuario");
 
-            Intent intent = getIntent();
-
             LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
             final Intent mServiceIntent = new Intent(RecibirActivity.this, ServiceCaller.class);   //
+
+            /* seteo del spinner de los recursos */
 
             mServiceIntent.putExtra(ServiceCaller.OPERACION, GET_OWN_PETITIONS_OP);
             mServiceIntent.putExtra(ServiceCaller.RUTA, GET_OWN_PETITIONS_PATH + "/"+persona.getId());
@@ -100,32 +122,36 @@ public class RecibirActivity extends AppCompatActivity {
             spinnerResource.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
                     final Intent mServiceIntentSpinner = new Intent(RecibirActivity.this, ServiceCaller.class);
                     mServiceIntentSpinner.putExtra(ServiceCaller.OPERACION, GET_USERINFO_OP);
-                    mServiceIntentSpinner.putExtra(ServiceCaller.RUTA, GET_USERINFO_PATH+"/"+(getPeticiones().get(1)).getId_origen());
+                    StringTokenizer tokenizer = new StringTokenizer((String)spinnerResource.getSelectedItem());
+                    mServiceIntentSpinner.putExtra(ServiceCaller.RUTA, GET_USERINFO_PATH+"/"+(getPeticiones().get((Integer.valueOf(tokenizer.nextToken())))).getId_origen());
                     startService(mServiceIntentSpinner);
                 }
-
                 @Override
                 public void onNothingSelected(AdapterView<?> adapterView) {
 
                 }
             });
+
+            /* seteo del boton de escaneo */
+
             this.integrator = new IntentIntegrator(this);
+            this.integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
+            integrator.setPrompt(" Scan a QR Code");
+
+            integrator.setScanningRectangle(450, 450);
 
             // TODO escanear Buton
             escanearButton.setOnClickListener(new AdapterView.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     integrator.initiateScan();
-                    if (isEscaneado()) {
-                        confirmButton.setEnabled(true);
-
-
-                    }
                 }
             });
+
+            /* seteo de confirmacion del envio */
 
             confirmButton.setOnClickListener(new AdapterView.OnClickListener() {
                 @Override
@@ -134,6 +160,7 @@ public class RecibirActivity extends AppCompatActivity {
 
                     mServiceIntentCONFIRM.putExtra(ServiceCaller.OPERACION, CONFIRM_OP);
                     //todo SACAR HARDCODE
+
                     Peticion peti= getPeticiones().get(1);
                     mServiceIntentCONFIRM.putExtra("id_package",(peti.getId_package()));
                     mServiceIntentCONFIRM.putExtra("id_resource",(peti.getId_recurso()));
@@ -148,7 +175,33 @@ public class RecibirActivity extends AppCompatActivity {
         } else {
             Toast.makeText(RecibirActivity.this, "Conexion no disponible", Toast.LENGTH_SHORT);
         }
+    }
 
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.d("ACTIVITIRESULT", "");
+        //retrieve scan result
+        IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanningResult.getFormatName() != null) {
+            String scanContent = scanningResult.getContents();
+            Log.e("<--", scanContent);
+            StringTokenizer tokenizer = new StringTokenizer((String)spinnerResource.getSelectedItem());
+            if((!scanContent.equals(""))&&(Integer.valueOf(scanContent).equals(peticiones.get(Integer.valueOf(tokenizer.nextToken())).getId_package()))){
+                scannedImage.setImageResource(R.drawable.green_check);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "El paquete asignado coincide", Toast.LENGTH_LONG);
+                toast.show();
+                escanearButton.setEnabled(false);
+                confirmButton.setEnabled(true);
+            }
+            else {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "El paquete escaneado no es el asignado", Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
     }
 
 
@@ -156,7 +209,6 @@ public class RecibirActivity extends AppCompatActivity {
         this.recursos = recursos;
         Integer[] recursosIdList = recursos.keySet().toArray(new Integer[recursos.keySet().size()]);
 
-        //String[] recursoNameList = recursos.values()
         String[] recursoList = new String[recursos.keySet().size()];
 
         for (int i = 0 ; i<recursos.keySet().size() ; i++){
@@ -164,6 +216,14 @@ public class RecibirActivity extends AppCompatActivity {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,recursoList);
         spinnerResource.setAdapter(adapter);
+    }
+
+    public void setTextViews(){
+        nombre_tv.setText("Nombre: "+getDonante().getNombre());
+        direccion_tv.setText("Direccion: "+getDonante().getDireccion());
+        telefono_tv.setText("Telefono: "+getDonante().getTelefono());
+        if(!getDonante().getWeb().equals("null")) website_tv.setText("Website: "+getDonante().getWeb()); else website_tv.setText("Website: ");
+        ciudad_tv.setText("Ciudad: "+getDonante().getCiudad());
     }
 
     public Spinner getSpinnerResource() {
@@ -176,21 +236,6 @@ public class RecibirActivity extends AppCompatActivity {
 
     public void setPersona(Persona persona) {
         this.persona = persona;
-    }
-
-    public void setTextViews(){
-       // nombre_tv.append(" "+persona.getNombre());
-
-        nombre_tv.setText("Nombre: "+getDonante().getNombre());
-        direccion_tv.setText("Direccion: "+getDonante().getDireccion());
-        telefono_tv.setText("Telefono: "+getDonante().getTelefono());
-        website_tv.setText("Website: "+getDonante().getWeb());
-        ciudad_tv.setText("Ciudad: "+getDonante().getCiudad());
-
-        getCantidad();
-
-
-
     }
 
     public Persona getDonante() {
@@ -228,11 +273,10 @@ public class RecibirActivity extends AppCompatActivity {
         this.peticiones = peticiones;
     }
 
-    public boolean isEscaneado() {
-        return escaneado;
-    }
-
-    public void setEscaneado(boolean escaneado) {
-        this.escaneado = escaneado;
+    public void notifySuccess(String mensaje) {
+        Toast toast = Toast.makeText(getApplicationContext(),
+                mensaje, Toast.LENGTH_LONG);
+        toast.show();
+        finish();
     }
 }
