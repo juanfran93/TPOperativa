@@ -9,16 +9,18 @@
 
 
         <ScrollView
-            android:layout_width="585dp"
-            android:layout_height="810dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:clickable="false"
-            tools:layout_editor_absoluteX="8dp"
-            tools:layout_editor_absoluteY="8dp">
+            tools:layout_editor_absoluteX="2dp"
+            tools:layout_editor_absoluteY="1dp">
 
                 <LinearLayout
                     android:id="@+id/simple_spinner_dropdown_item"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:orientation="vertical"
                     android:weightSum="3">
 
@@ -26,10 +28,11 @@
                             android:id="@+id/txt_Cantidad"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_marginTop="32dp"
                             android:background="@android:color/white"
                             android:ems="10"
+                            android:hint="Nombre y Apellido"
                             android:inputType="textPersonName"
-                            android:text="Nombre y Apellido"
                             tools:layout_editor_absoluteX="8dp"
                             tools:layout_editor_absoluteY="20dp" />
 
@@ -40,8 +43,8 @@
                             android:layout_marginTop="8dp"
                             android:background="@color/common_google_signin_btn_text_dark_default"
                             android:ems="10"
+                            android:hint="Email"
                             android:inputType="textEmailAddress"
-                            android:text="Email"
                             app:layout_constraintTop_toBottomOf="@+id/txt_Cantidad"
                             tools:layout_editor_absoluteX="8dp" />
 
@@ -52,8 +55,8 @@
                             android:layout_marginTop="8dp"
                             android:background="@color/common_google_signin_btn_text_dark_default"
                             android:ems="10"
+                            android:hint="Nombre de usuario"
                             android:inputType="textPersonName"
-                            android:text="Nombre de usuario"
                             app:layout_constraintTop_toBottomOf="@+id/txt_email"
                             tools:layout_editor_absoluteX="7dp" />
 
@@ -64,8 +67,8 @@
                             android:layout_marginTop="8dp"
                             android:background="@color/common_google_signin_btn_text_dark_default"
                             android:ems="10"
+                            android:hint="Dirección"
                             android:inputType="textPersonName"
-                            android:text="Direccion"
                             app:layout_constraintTop_toBottomOf="@+id/txt_username"
                             tools:layout_editor_absoluteX="7dp" />
 
@@ -76,8 +79,8 @@
                             android:layout_marginTop="8dp"
                             android:background="@color/common_google_signin_btn_text_dark_default"
                             android:ems="10"
+                            android:hint="Teléfono"
                             android:inputType="phone"
-                            android:text="Telefono"
                             app:layout_constraintTop_toBottomOf="@+id/txt_direccion"
                             tools:layout_editor_absoluteX="7dp" />
 
@@ -98,12 +101,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
-                        <Spinner
-                            android:id="@+id/spinner_resource"
+                        <AutoCompleteTextView
+                            android:id="@+id/institucionesATV"
                             android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:background="@android:drawable/btn_dropdown"
-                            android:spinnerMode="dialog" />
+                            android:layout_height="wrap_content"
+                            android:hint="Institución" />
 
                         <TextView
                             android:id="@+id/sepa2"
@@ -116,20 +118,21 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/background_light"
                             android:ems="10"
-                            android:inputType="textPersonName"
-                            android:text="Website" />
+                            android:hint="Website"
+                            android:inputType="textPersonName" />
+
                         <Button
                             android:id="@+id/btnFinalizar"
                             style="?android:textAppearanceSmall"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="120dp"
                             android:background="@color/colorAccent"
-                            android:text="Finalizar"
-                            android:textSize="20dp"
-                            android:textColor="@android:color/background_light"
-                            />
-
+                            android:text="REGISTRAR"
+                            android:textColor="@android:color/background_dark"
+                            android:textSize="20dp" />
 
 
                 </LinearLayout>

@@ -45,6 +45,7 @@ public class DonationActivity extends AppCompatActivity {
         persona = (Persona) getIntent().getSerializableExtra("Usuario");
 
         recursosEditText = (AutoCompleteTextView) findViewById(R.id.autoText_resource);
+
         LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
         final Intent mServiceIntent = new Intent(DonationActivity.this, ServiceCaller.class);
         mServiceIntent.putExtra(ServiceCaller.OPERACION, "getresources");

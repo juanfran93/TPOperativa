@@ -3,20 +3,25 @@ package com.example.maxi.tpoperativa;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,17 +39,18 @@ public class RegisterActivity extends AppCompatActivity{
     private TextView Telefono;
     private TextView Password;
     private TextView Website;
-    private Spinner spinnerCities;
+    private AutoCompleteTextView institucionesEditText;
     private Button btnFinalizar;
-    private int itemSpinner;
     private RegisterActivity actividad;
+
+    private LocalRecieverRegister reciever = new LocalRecieverRegister(this);
 
     public static final String REGISTER_OP = "registeruser";
     public static final String REGISTER_PATH = "registeruser";
 
     private static final String TAG = RegisterActivity.class.getCanonicalName();
 
-    private List listCities = new ArrayList<>();
+    private HashMap<String,Integer> instituciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,81 +59,13 @@ public class RegisterActivity extends AppCompatActivity{
         setContentView(R.layout.activity_register);
         this.actividad = this;
 
+        this.institucionesEditText = (AutoCompleteTextView) findViewById(R.id.institucionesATV);
 
-        this.itemSpinner = 0;
+        LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
+        final Intent mServiceIntent = new Intent(RegisterActivity.this, ServiceCaller.class);
+        mServiceIntent.putExtra(ServiceCaller.OPERACION, "getinstitutions");
+        mServiceIntent.putExtra(ServiceCaller.RUTA, "getinstitutions");
 
-        this.Nombre = (TextView) findViewById(R.id.txt_Cantidad);
-        this.Nombre.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(String.valueOf(Nombre.getText()).equals("Nombre y Apellido"))
-                    Nombre.setText("");
-            }
-        });
-        this.Email = (TextView) findViewById(R.id.txt_email);
-        this.Email.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(String.valueOf(Email.getText()).equals("Email"))
-                    Email.setText("");
-            }
-        });
-        this.Usuario = (TextView) findViewById(R.id.txt_username);
-        this.Usuario.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(String.valueOf(Usuario.getText()).equals("Nombre de usuario"))
-                    Usuario.setText("");
-            }
-        });
-        this.Direccion = (TextView) findViewById(R.id.txt_direccion);
-        this.Direccion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(String.valueOf(Direccion.getText()).equals("Direccion"))
-                    Direccion.setText("");
-            }
-        });
-        this.Telefono = (TextView) findViewById(R.id.txt_telefono);
-        this.Telefono.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(String.valueOf(Telefono.getText()).equals("Telefono"))
-                    Telefono.setText("");
-            }
-        });
-
-        this.Password = (TextView) findViewById(R.id.txt_password);
-        this.Password.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(String.valueOf(Password.getText()).equals("Password"))
-                    Password.setText("");
-            }
-        });
-
-        this.Website = (TextView) findViewById(R.id.txt_Website);
-        this.Website.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(String.valueOf(Website.getText()).equals("Website"))
-                    Website.setText("");
-            }
-        });
-
-        this.spinnerCities = (Spinner) findViewById(R.id.spinner_resource);
-        updateSpinner();
-
-        this.spinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            public void onItemSelected(AdapterView<?> parentView,View selectedItemView, int position, long id) {
-                itemSpinner = spinnerCities.getSelectedItemPosition() + 1;
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                itemSpinner = 0;
-            };
-        });
 
         this.btnFinalizar = (Button) findViewById(R.id.btnFinalizar);
         this.btnFinalizar.setOnClickListener(new View.OnClickListener() {
@@ -136,15 +74,23 @@ public class RegisterActivity extends AppCompatActivity{
                     createUser();
             }
         });
-
-
-
     }
+    ///////////////////////////////
+
+    public void setAutoTextInstitutions(HashMap<String, Integer> intituciones) {
+        this.instituciones = intituciones;
+        String[] institusList = intituciones.keySet().toArray(new String[intituciones.keySet().size()]);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, institusList);
+        institucionesEditText.setAdapter(adapter);
+    }
+    ///////////////////////////
     private void createUser(){
         if(verifyDate()){
+            //FIXME institucion
             Elemento element = new Persona(Usuario.getText(),Password.getText().toString(),
                     Nombre.getText(),Email.getText(),Direccion.getText(),Telefono.getText(),
-                    Website.getText(),itemSpinner);
+                    Website.getText(),1);
             //AddElementTask add = new AddElementTask(element,this);
             //add.execute();
             //finish();
@@ -160,7 +106,8 @@ public class RegisterActivity extends AppCompatActivity{
             intentL.putExtra("telefono",Telefono.getText().toString());
             intentL.putExtra("web",Website.getText().toString());
             intentL.putExtra("password",Password.getText().toString());
-            intentL.putExtra("ciudad",Integer.getInteger(spinnerCities.getSelectedItem().toString()));
+            //TODO Sacar ciudad -> poner institucion.
+            intentL.putExtra("ciudad", instituciones.get(institucionesEditText.getText().toString()).toString());
             intentL.putExtra("longitud",2.00);
             intentL.putExtra("latitud",2.00);
             startService(intentL);
@@ -171,22 +118,13 @@ public class RegisterActivity extends AppCompatActivity{
             text.show();
         }
     }
-    private void updateSpinner(){
-        Log.d(TAG,"HAGO CLICK");
-        SpinnerTask citiesTask = new SpinnerTask(this.spinnerCities,RegisterActivity.this,"name");
 
-        String query = "SELECT * " +
-                "FROM locations";
-
-        citiesTask.execute(query);
-        spinnerCities = citiesTask.getSpinnerCities();
-
-    }
     private boolean verifyDate() {
+        //TODO ARREGLAR
         if(String.valueOf(this.Nombre.getText()).length() != 0 && String.valueOf(this.Email.getText()).length() != 0
                 && String.valueOf(this.Usuario.getText()).length() != 0 && String.valueOf(this.Direccion.getText()).length() != 0
                 &&String.valueOf(this.Telefono.getText()).length() != 0 && String.valueOf(this.Password.getText()).length() != 0
-                && (itemSpinner != 0) )
+                )//&& (itemSpinner != 0) )
             return true;
         return false;
     }
