@@ -116,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity{
         });
 
         this.spinnerCities = (Spinner) findViewById(R.id.spinner_resource);
-        updateSpinner();
+        //updateSpinner();
 
         this.spinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -171,6 +171,7 @@ public class RegisterActivity extends AppCompatActivity{
             text.show();
         }
     }
+
     private void updateSpinner(){
         Log.d(TAG,"HAGO CLICK");
         SpinnerTask citiesTask = new SpinnerTask(this.spinnerCities,RegisterActivity.this,"name");
@@ -180,7 +181,6 @@ public class RegisterActivity extends AppCompatActivity{
 
         citiesTask.execute(query);
         spinnerCities = citiesTask.getSpinnerCities();
-
     }
     private boolean verifyDate() {
         if(String.valueOf(this.Nombre.getText()).length() != 0 && String.valueOf(this.Email.getText()).length() != 0
