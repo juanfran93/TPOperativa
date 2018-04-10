@@ -55,7 +55,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/datos_donanteView2"
+                    android:id="@+id/datos_paqueteTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -67,7 +67,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/recursotextView11"
+                    android:id="@+id/resourceType_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -90,7 +90,7 @@
 
 
             <RadioGroup
-                android:id="@+id/opciones"
+                android:id="@+id/opcionesRadio"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
@@ -135,14 +135,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp" />
 
-            <CheckBox
-                android:id="@+id/enUso_check"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="El objeto estaba en uso" />
-
             <Button
-                android:id="@+id/confirm_button3"
+                android:id="@+id/confirmUpdate_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"

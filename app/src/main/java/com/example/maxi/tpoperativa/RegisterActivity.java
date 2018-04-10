@@ -66,6 +66,73 @@ public class RegisterActivity extends AppCompatActivity{
         mServiceIntent.putExtra(ServiceCaller.OPERACION, "getinstitutions");
         mServiceIntent.putExtra(ServiceCaller.RUTA, "getinstitutions");
 
+        this.itemSpinner = 0;
+
+        this.Nombre = (TextView) findViewById(R.id.txt_Cantidad);
+        this.Nombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(String.valueOf(Nombre.getText()).equals("Nombre y Apellido"))
+                    Nombre.setText("");
+            }
+        });
+        this.Email = (TextView) findViewById(R.id.txt_email);
+        this.Email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(String.valueOf(Email.getText()).equals("Email"))
+                    Email.setText("");
+            }
+        });
+        this.Usuario = (TextView) findViewById(R.id.txt_username);
+        this.Usuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(String.valueOf(Usuario.getText()).equals("Nombre de usuario"))
+                    Usuario.setText("");
+            }
+        });
+        this.Direccion = (TextView) findViewById(R.id.txt_direccion);
+        this.Direccion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(String.valueOf(Direccion.getText()).equals("Direccion"))
+                    Direccion.setText("");
+            }
+        });
+        this.Telefono = (TextView) findViewById(R.id.txt_telefono);
+        this.Telefono.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(String.valueOf(Telefono.getText()).equals("Telefono"))
+                    Telefono.setText("");
+            }
+        });
+
+        this.Password = (TextView) findViewById(R.id.txt_password);
+        this.Password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(String.valueOf(Password.getText()).equals("Password"))
+                    Password.setText("");
+            }
+        });
+
+        this.Website = (TextView) findViewById(R.id.txt_Website);
+        this.Website.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(String.valueOf(Website.getText()).equals("Website"))
+                    Website.setText("");
+            }
+        });
+
+        this.spinnerCities = (Spinner) findViewById(R.id.spinner_resource);
+        //updateSpinner();
+
+        this.spinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+
 
         this.btnFinalizar = (Button) findViewById(R.id.btnFinalizar);
         this.btnFinalizar.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +185,7 @@ public class RegisterActivity extends AppCompatActivity{
             text.show();
         }
     }
+
 
     private boolean verifyDate() {
         //TODO ARREGLAR

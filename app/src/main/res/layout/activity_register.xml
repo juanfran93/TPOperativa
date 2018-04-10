@@ -118,8 +118,10 @@
                             android:layout_height="wrap_content"
                             android:background="@android:color/background_light"
                             android:ems="10"
+
                             android:hint="Website"
                             android:inputType="textPersonName" />
+
 
                         <Button
                             android:id="@+id/btnFinalizar"
@@ -133,6 +135,7 @@
                             android:text="REGISTRAR"
                             android:textColor="@android:color/background_dark"
                             android:textSize="20dp" />
+
 
 
                 </LinearLayout>
