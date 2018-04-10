@@ -13,17 +13,21 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -274,8 +278,13 @@ public class RecibirActivity extends AppCompatActivity {
     }
 
     public void notifySuccess(String mensaje) {
-        Toast toast = Toast.makeText(getApplicationContext(),
-                mensaje, Toast.LENGTH_LONG);
+        Toast toast = Toast.makeText(this,
+                mensaje, Toast.LENGTH_SHORT);
+        LinearLayout layout = (LinearLayout) toast.getView();
+        if (layout.getChildCount() > 0) {
+            TextView tv = (TextView) layout.getChildAt(0);
+            tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+        }
         toast.show();
         finish();
     }
