@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * Created by lucho on 31/01/2018.
@@ -25,6 +28,27 @@ public class LocalRecieverRegister extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String operation = intent.getStringExtra(ServiceCaller.OPERACION);
+        switch (operation) {
+            case "getintitutions" :
+                try {
+                    JSONObject json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
+                    JSONArray jsonArray = new JSONArray(json.getString("institutions"));
+                    HashMap<String, Integer> institutions = new HashMap<>();
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonInstitution = jsonArray.getJSONObject(i);
+                        Integer id = jsonInstitution.getInt("id");
+                        String insti = jsonInstitution.getString("nombre");
+                        institutions.put(insti, id);
+                    }
+                    registerActivity.setAutoTextInstitutions(institutions);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+        /*
+        String operation = intent.getStringExtra(ServiceCaller.OPERACION);
         try {
             JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
             int status = jsona.getInt("status");
@@ -38,6 +62,6 @@ public class LocalRecieverRegister extends BroadcastReceiver {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        */
     }
 }
