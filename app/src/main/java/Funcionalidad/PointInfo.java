@@ -1,5 +1,9 @@
 package Funcionalidad;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+
 /**
  * Created by Maxi on 1/5/2017.
  */
@@ -120,6 +124,11 @@ public class PointInfo {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public LatLng getLatLng(){
+        LatLng latlng = new LatLng(this.getLatitude(),this.getLongitude());
+        return latlng;
     }
 
 }

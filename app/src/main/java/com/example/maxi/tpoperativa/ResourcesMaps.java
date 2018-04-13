@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -26,14 +27,25 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.ButtCap;
+import com.google.android.gms.maps.model.CustomCap;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
+import com.google.android.gms.maps.model.SquareCap;
 
+
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
@@ -174,13 +186,28 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
             task.execute(query);
             ResultSet result = task.get();*/
             int count = 1;
+            ArrayList<LatLng> listLatLng = new ArrayList<>();
             for(PointInfo p : pointInfo) {
                 //PointInfo point = generarPoint(result);
                 changeLocationIdem(p);
                 //pointInfo.add(p);
                 addPointIntoMap(p, count);
+                listLatLng.add(p.getLatLng());
                 count++;
+
+
             }
+
+
+        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .addAll(listLatLng));
+            polyline1.setColor(Color.RED);
+            polyline1.setGeodesic(true);
+            polyline1.setStartCap(new RoundCap());
+            polyline1.setEndCap(new CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.ic_flecha), 10));
+            polyline1.setJointType(1);
+            polyline1.setTag("A");
             /*
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -191,6 +218,9 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         }
 
         */
+
+// Store a data object with the polyline, used here to indicate an arbitrary type.
+
     }
     //Genero el punto con la informacion necesaria
     /*
@@ -253,6 +283,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
     private void addPointIntoMap(PointInfo pointer, int count){
 
         LatLng point = new LatLng(pointer.getLatitude(), pointer.getLongitude());
+
         Log.d("PUNTO","AGREGAR PUNTO= "+point.longitude + " , "+point.latitude);
         String textNumber = String.valueOf(count);
         int numberIcon = this.getLayoutNumber(pointer.getDestino_role());
@@ -261,6 +292,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         addMensaje();
         mMap.addMarker(tag);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+
     }
 
     //Si hay dos puntos que compiten por la misma posicion, muevo la latitud para
@@ -327,6 +359,18 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
     public void setMaps(ArrayList<PointInfo> nodos) {
         pointInfo = nodos;
         onMapReady(mMap);
+    }
+
+    private void dibujarPuntos(ArrayList<PointInfo> nodos){
+        Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+                .clickable(false)
+                .add(
+                        new LatLng(-35.016, 143.321),
+                        new LatLng(-34.747, 145.592),
+                        new LatLng(-34.364, 147.891),
+                        new LatLng(-33.501, 150.217),
+                        new LatLng(-32.306, 149.248),
+                        new LatLng(-32.491, 147.309)));
     }
 }
 

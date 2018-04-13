@@ -11,6 +11,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import Funcionalidad.Persona;
 
@@ -18,6 +20,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private Persona user;
+    private Polyline polyline;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.mapp);
         mapFragment.getMapAsync(this);
         this.user = (Persona)getIntent().getExtras().getSerializable("Persona");
+
     }
 
 
@@ -58,4 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(new MarkerOptions().position(point).title(text));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
     }
+
+
+
 }
