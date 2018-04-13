@@ -66,8 +66,6 @@ public class RegisterActivity extends AppCompatActivity{
         mServiceIntent.putExtra(ServiceCaller.OPERACION, "getinstitutions");
         mServiceIntent.putExtra(ServiceCaller.RUTA, "getinstitutions");
 
-        this.itemSpinner = 0;
-
         this.Nombre = (TextView) findViewById(R.id.txt_Cantidad);
         this.Nombre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,12 +124,6 @@ public class RegisterActivity extends AppCompatActivity{
                     Website.setText("");
             }
         });
-
-        this.spinnerCities = (Spinner) findViewById(R.id.spinner_resource);
-        //updateSpinner();
-
-        this.spinnerCities.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
 
 
         this.btnFinalizar = (Button) findViewById(R.id.btnFinalizar);
