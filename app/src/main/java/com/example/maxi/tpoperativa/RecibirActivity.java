@@ -20,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -128,7 +129,7 @@ public class RecibirActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     final Intent mServiceIntentSpinner = new Intent(RecibirActivity.this, ServiceCaller.class);
                     mServiceIntentSpinner.putExtra(ServiceCaller.OPERACION, GET_USERINFO_OP);
-                    StringTokenizer tokenizer = new StringTokenizer((String)spinnerResource.getSelectedItem());
+                    StringTokenizer tokenizer = new StringTokenizer(spinnerResource.getSelectedItem().toString());
                     mServiceIntentSpinner.putExtra(ServiceCaller.RUTA, GET_USERINFO_PATH+"/"+(getPeticiones().get((Integer.valueOf(tokenizer.nextToken())))).getId_origen());
                     startService(mServiceIntentSpinner);
                 }
@@ -165,7 +166,9 @@ public class RecibirActivity extends AppCompatActivity {
                     mServiceIntentCONFIRM.putExtra(ServiceCaller.OPERACION, CONFIRM_OP);
                     //todo SACAR HARDCODE
 
-                    Peticion peti= getPeticiones().get(1);
+                    StringTokenizer tokenizer = new StringTokenizer(spinnerResource.getSelectedItem().toString());
+
+                    Peticion peti= getPeticiones().get(Integer.valueOf(tokenizer.nextToken()));
                     mServiceIntentCONFIRM.putExtra("id_package",(peti.getId_package()));
                     mServiceIntentCONFIRM.putExtra("id_resource",(peti.getId_recurso()));
                     mServiceIntentCONFIRM.putExtra("cantidad",(peti.getCantidad()));
@@ -191,7 +194,7 @@ public class RecibirActivity extends AppCompatActivity {
         if (scanningResult.getFormatName() != null) {
             String scanContent = scanningResult.getContents();
             Log.e("<--", scanContent);
-            StringTokenizer tokenizer = new StringTokenizer((String)spinnerResource.getSelectedItem());
+            StringTokenizer tokenizer = new StringTokenizer(spinnerResource.getSelectedItem().toString());
             if((!scanContent.equals(""))&&(Integer.valueOf(scanContent).equals(peticiones.get(Integer.valueOf(tokenizer.nextToken())).getId_package()))){
                 scannedImage.setImageResource(R.drawable.green_check);
                 Toast toast = Toast.makeText(getApplicationContext(),

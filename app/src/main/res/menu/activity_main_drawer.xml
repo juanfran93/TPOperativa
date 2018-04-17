@@ -24,6 +24,7 @@
             android:title="Recibir Recurso" />
         <item
             android:id="@+id/nav_UsosRecurso"
+            android:icon="?android:attr/actionModeSelectAllDrawable"
             android:title="Actualizar estado de paquetes" />
     </group>
 
