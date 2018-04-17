@@ -83,7 +83,8 @@ public class LocalRecieverUsos extends BroadcastReceiver {
 
                     for(int i = 0; i < json.length(); i++) {
                         JSONObject jsonRec = json.getJSONObject(i);
-                        PointInfo nodo = new PointInfo(jsonRec.getInt("id"),jsonRec.getInt("id_origen"),jsonRec.getString("nombre_origen"),jsonRec.getInt("id_destino"),jsonRec.getString("nombre_destino"),1,jsonRec.getString("address"),jsonRec.getDouble("latitude"),jsonRec.getDouble("longitude"),jsonRec.getString("fecha"));
+                        // fixme esta bien escrito id_paquete y padre?
+                        PointInfo nodo = new PointInfo(jsonRec.getInt("id"),jsonRec.getInt("id_origen"),jsonRec.getString("nombre_origen"),jsonRec.getInt("id_destino"),jsonRec.getString("nombre_destino"),1,jsonRec.getString("address"),jsonRec.getDouble("latitude"),jsonRec.getDouble("longitude"),jsonRec.getString("fecha"),jsonRec.getInt("id_paquete"),jsonRec.getInt("padre"));
                         nodos.add(nodo);
                     }
 
