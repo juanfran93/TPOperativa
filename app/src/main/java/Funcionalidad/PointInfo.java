@@ -1,8 +1,9 @@
 package Funcionalidad;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
+import com.google.android.gms.common.internal.safeparcel.zza;
+import com.google.android.gms.common.internal.safeparcel.zzd;
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * Created by Maxi on 1/5/2017.
@@ -25,7 +26,12 @@ public class PointInfo {
     private int id_paquete;
 
 
-
+    public PointInfo(int id, int idPaquete, int idPadre){
+    	this.id = id;
+    	
+    	this.id_paquete = idPaquete;
+    	this.id_padre = idPadre;
+    }
 
     public PointInfo(int id,int id_origen, String origen_name, int id_destino,
                      String destino_name, int destino_role, String dest_address, double latitude, double longitude, String date, int padre, int id_paquete) {
@@ -150,10 +156,10 @@ public class PointInfo {
         this.id_paquete = id_paquete;
     }
 
-
     public LatLng getLatLng(){
         LatLng latlng = new LatLng(this.getLatitude(),this.getLongitude());
         return latlng;
     }
+
 
 }

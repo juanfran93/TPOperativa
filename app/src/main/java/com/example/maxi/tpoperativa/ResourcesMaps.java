@@ -51,6 +51,7 @@ import java.util.concurrent.ExecutionException;
 
 import Funcionalidad.Persona;
 import Funcionalidad.PointInfo;
+import Funcionalidad.PointInfoList;
 import TareasAsincronas.ResultSetTask;
 
 public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallback{
@@ -145,26 +146,32 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         mMap.clear();
 
         int count = 1;
-        ArrayList<LatLng> listLatLng = new ArrayList<>();
-        for(PointInfo p : pointInfo) {
-            changeLocationIdem(p);
-            addPointIntoMap(p, count);
-            listLatLng.add(p.getLatLng());
-            count++;
+        ArrayList<ArrayList<LatLng>> listLatLng = new ArrayList<ArrayList<LatLng>>();  //
+
+        PointInfoList pil = new PointInfoList(pointInfo);
+        for (ArrayList<PointInfo> al : pil.ordenarNodos()) {
+            ArrayList<LatLng> lll = new ArrayList<LatLng>();
+            for(PointInfo p : al) {
+                changeLocationIdem(p);
+                addPointIntoMap(p, count);
+                lll.add(p.getLatLng());
+                count++;
+            }
+            listLatLng.add(lll);
         }
 
-
-        Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
-                                        .clickable(true)
-                                        .addAll(listLatLng));
-            polyline1.setColor(Color.RED);
+        for (ArrayList<LatLng> al : listLatLng ) {
+            Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+                    .clickable(true)
+                    .addAll(al));
+            polyline1.setColor(Color.BLUE);
             polyline1.setGeodesic(true);
             polyline1.setStartCap(new RoundCap());
             polyline1.setEndCap(new CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.ic_flecha), 10));
             polyline1.setJointType(1);
             polyline1.setTag("A");
 
-
+        }
     }
 
     //Cambio la ventana del punto con la info
