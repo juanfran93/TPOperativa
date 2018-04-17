@@ -1,5 +1,10 @@
 package Funcionalidad;
 
+import java.util.ArrayList;
+import com.google.android.gms.common.internal.safeparcel.zza;
+import com.google.android.gms.common.internal.safeparcel.zzd;
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by Maxi on 1/5/2017.
  */
@@ -17,9 +22,19 @@ public class PointInfo {
     private double longitude;
     private String date;
 
+    private int id_padre;
+    private int id_paquete;
+
+
+    public PointInfo(int id, int idPaquete, int idPadre){
+    	this.id = id;
+    	
+    	this.id_paquete = idPaquete;
+    	this.id_padre = idPadre;
+    }
 
     public PointInfo(int id,int id_origen, String origen_name, int id_destino,
-                     String destino_name, int destino_role, String dest_address, double latitude, double longitude, String date) {
+                     String destino_name, int destino_role, String dest_address, double latitude, double longitude, String date, int padre, int id_paquete) {
 
         this.id              = id;
         this.id_resource     = 0;
@@ -32,6 +47,8 @@ public class PointInfo {
         this.latitude        = latitude;
         this.longitude       = longitude;
         this.date            = date;
+        this.id_padre        = padre;
+        this.id_paquete      = id_paquete;
     }
 
     //GETTERS AND SETTERS
@@ -121,5 +138,28 @@ public class PointInfo {
     public void setDate(String date) {
         this.date = date;
     }
+
+
+    public int getId_padre() {
+        return id_padre;
+    }
+
+    public void setId_padre(int id_padre) {
+        this.id_padre = id_padre;
+    }
+
+    public int getId_paquete() {
+        return id_paquete;
+    }
+
+    public void setId_paquete(int id_paquete) {
+        this.id_paquete = id_paquete;
+    }
+
+    public LatLng getLatLng(){
+        LatLng latlng = new LatLng(this.getLatitude(),this.getLongitude());
+        return latlng;
+    }
+
 
 }

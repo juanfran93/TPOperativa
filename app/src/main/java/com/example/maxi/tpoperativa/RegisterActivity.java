@@ -67,7 +67,6 @@ public class RegisterActivity extends AppCompatActivity{
         mServiceIntent.putExtra(ServiceCaller.RUTA, "getinstituciones");
         startService(mServiceIntent);
 
-
         this.Nombre = (TextView) findViewById(R.id.txt_Cantidad);
         this.Nombre.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +88,11 @@ public class RegisterActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if(String.valueOf(Usuario.getText()).equals("Nombre de usuario"))
-                    Usuario.setText("");
+
+                  
+                  
+                  
+              Usuario.setText("");
             }
         });
         this.Direccion = (TextView) findViewById(R.id.txt_direccion);

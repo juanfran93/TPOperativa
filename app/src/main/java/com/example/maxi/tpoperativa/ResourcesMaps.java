@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -26,19 +27,31 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.ButtCap;
+import com.google.android.gms.maps.model.CustomCap;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.RoundCap;
+import com.google.android.gms.maps.model.SquareCap;
 
+
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import Funcionalidad.Persona;
 import Funcionalidad.PointInfo;
+import Funcionalidad.PointInfoList;
 import TareasAsincronas.ResultSetTask;
 
 public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallback{
@@ -55,6 +68,8 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
     private HashMap<String,Integer> recursos;
 
     private LocalRecieverMaps reciever = new LocalRecieverMaps(this);
+
+    private HashMap<Integer,Integer[]> padrehijos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +96,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
             mServiceIntent.putExtra(ServiceCaller.OPERACION, "getownresources");
             mServiceIntent.putExtra(ServiceCaller.RUTA, "getownresources" + "/" + persona.getId());
             startService(mServiceIntent);
-            //Genero la query para cargar el spinner
 
-        /*String query = "SELECT name " +
-                "FROM resource_route as RR INNER JOIN resources as R ON RR.id_resource = R.id " +
-                "WHERE id_origen = " + ((Persona)element).getId() + " OR id_destino = " + ((Persona)element).getId()+
-                " GROUP BY name " +
-                "ORDER BY name";
-        updateSpinner(this.spinnerResources,query,"name");
-
-        this.textSpinner = ""; */
             this.spinnerResources.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -102,14 +108,6 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
                     mServiceIntent.putExtra("user", persona.getId());
                     mServiceIntent.putExtra("resource",recursos.get(resource));
                     startService(mServiceIntent);
-
-            /*                String query = " SELECT track_code "+
-                        " FROM RESOURCES AS R INNER JOIN resource_route AS RR ON R.id = RR.id_resource"+
-                        " WHERE R.name = '"+text+"'" + " AND (id_origen = " + persona.getId() + " OR id_destino = " + persona.getId() +
-                        ") GROUP BY RR.TRACK_CODE ";
-                updateSpinner(spinnerPackages,query,"track_code");
-                selected = true;
-                */
                 }
 
                 @Override
@@ -139,16 +137,6 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
 
         }
 
-
-        //Spinner de los nombres de recursos
-    /*private void updateSpinner(Spinner spinner, String query,String column){
-
-
-        SpinnerTask citiesTask = new SpinnerTask(spinner,ResourcesMaps.this,column);
-        citiesTask.execute(query);
-        spinner = citiesTask.getSpinnerCities();
-    }
-    */
     }
 
     //Si el mapa esta listo agrego los puntos
@@ -156,60 +144,36 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         Log.d("MapReady", "Ingresando");
         mMap = googleMap;
         mMap.clear();
-        /*
-        String query = "SELECT RR.ID, RR.ID_RESOURCE, RR.ID_ORIGEN, O.NAME as ORI_NAME, RR.ID_DESTINO, D.NAME AS DES_NAME, D.ROLE_ID AS DES_ROLE,\n" +
-                "       D.ADDRESS AS DES_ADDRESS, RR.LATITUDE, RR.LONGITUDE, DATE_FORMAT(RR.DATE,'%d/%m/%Y') AS date\n" +
-                " FROM   RESOURCE_ROUTE AS RR, USERS AS O, USERS AS D, RESOURCES AS R \n" +
-                " WHERE R.ID = RR.ID_RESOURCE " +
-                "  AND  RR.TRACK_CODE ='" + track + "'\n" +
-                "  AND  RR.ID_DESTINO = D.ID\n" +
-                "  AND  RR.ID_ORIGEN  = O.ID ";
 
-        String mensaje = "No hay datos para mostrar";
-
-        ResultSetTask task = new ResultSetTask(this, mensaje);
         int count = 1;
+        ArrayList<ArrayList<LatLng>> listLatLng = new ArrayList<ArrayList<LatLng>>();  //
 
-        try {
-            task.execute(query);
-            ResultSet result = task.get();*/
-            int count = 1;
-            for(PointInfo p : pointInfo) {
-                //PointInfo point = generarPoint(result);
+        PointInfoList pil = new PointInfoList(pointInfo);
+        for (ArrayList<PointInfo> al : pil.ordenarNodos()) {
+            ArrayList<LatLng> lll = new ArrayList<LatLng>();
+            for(PointInfo p : al) {
                 changeLocationIdem(p);
-                //pointInfo.add(p);
                 addPointIntoMap(p, count);
+                lll.add(p.getLatLng());
                 count++;
             }
-            /*
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            listLatLng.add(lll);
         }
 
-        */
-    }
-    //Genero el punto con la informacion necesaria
-    /*
-    private PointInfo generarPoint(ResultSet result) throws SQLException {
-        int id              = result.getInt("id");
-        String id_resource  = result.getString("id_resource");
-        String id_origen    = result.getString("id_origen");
-        String origen_name  = result.getString("ORI_NAME");
-        String id_destino   = result.getString("id_destino");
-        String destino_name = result.getString("DES_NAME");
-        int destino_role    = result.getInt("DES_ROLE");
-        double latitude     = result.getDouble("latitude");
-        double longitude    = result.getDouble("longitude");
-        String date         = result.getString("date");
-        String dest_address      = result.getString("DES_ADDRESS");
-        return new PointInfo(id,id_resource,id_origen,origen_name,id_destino,destino_name,destino_role,dest_address,latitude,longitude,date);
+        for (ArrayList<LatLng> al : listLatLng ) {
+            Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+                    .clickable(true)
+                    .addAll(al));
+            polyline1.setColor(Color.BLUE);
+            polyline1.setGeodesic(true);
+            polyline1.setStartCap(new RoundCap());
+            polyline1.setEndCap(new CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.ic_flecha), 10));
+            polyline1.setJointType(1);
+            polyline1.setTag("A");
 
+        }
     }
-*/
+
     //Cambio la ventana del punto con la info
     private void addMensaje() {
         mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -253,6 +217,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
     private void addPointIntoMap(PointInfo pointer, int count){
 
         LatLng point = new LatLng(pointer.getLatitude(), pointer.getLongitude());
+
         Log.d("PUNTO","AGREGAR PUNTO= "+point.longitude + " , "+point.latitude);
         String textNumber = String.valueOf(count);
         int numberIcon = this.getLayoutNumber(pointer.getDestino_role());
@@ -261,6 +226,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         addMensaje();
         mMap.addMarker(tag);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+
     }
 
     //Si hay dos puntos que compiten por la misma posicion, muevo la latitud para
@@ -327,6 +293,18 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
     public void setMaps(ArrayList<PointInfo> nodos) {
         pointInfo = nodos;
         onMapReady(mMap);
+    }
+
+    private void dibujarPuntos(ArrayList<PointInfo> nodos){
+        Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+                .clickable(false)
+                .add(
+                        new LatLng(-35.016, 143.321),
+                        new LatLng(-34.747, 145.592),
+                        new LatLng(-34.364, 147.891),
+                        new LatLng(-33.501, 150.217),
+                        new LatLng(-32.306, 149.248),
+                        new LatLng(-32.491, 147.309)));
     }
 }
 
