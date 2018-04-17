@@ -1,5 +1,6 @@
 package com.example.maxi.tpoperativa;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -7,14 +8,12 @@ import android.net.NetworkInfo;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -36,7 +35,7 @@ public class PeticionActivity extends AppCompatActivity {
     private AutoCompleteTextView  recursosEditText;
     private EditText cantidad;
     private Button solicitarButton;
-    private LocalReciverPeticion reciever = new LocalReciverPeticion(this);
+    private LocalRecieverPeticion reciever = new LocalRecieverPeticion(this);
 
     private Persona persona;
 
@@ -71,15 +70,19 @@ public class PeticionActivity extends AppCompatActivity {
         solicitarButton.setOnClickListener(new AdapterView.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent mServiceIntentSOLICITAR = new Intent(PeticionActivity.this, ServiceCaller.class);
-                mServiceIntentSOLICITAR.putExtra(ServiceCaller.OPERACION, "addpeticion");
-                mServiceIntentSOLICITAR.putExtra(ServiceCaller.RUTA, "addpeticion");
+                if(validatedFields()) {
+                    final Intent mServiceIntentSOLICITAR = new Intent(PeticionActivity.this, ServiceCaller.class);
+                    mServiceIntentSOLICITAR.putExtra(ServiceCaller.OPERACION, "addpeticion");
+                    mServiceIntentSOLICITAR.putExtra(ServiceCaller.RUTA, "addpeticion");
 
-                mServiceIntentSOLICITAR.putExtra("idUser",persona.getId());
-                mServiceIntentSOLICITAR.putExtra("idResource",(recursos.get(recursosEditText.getText().toString()).intValue()));
-                mServiceIntentSOLICITAR.putExtra("cantidad", Integer.valueOf(cantidad.getText().toString()));
+                    mServiceIntentSOLICITAR.putExtra("idUser", persona.getId());
+                    mServiceIntentSOLICITAR.putExtra("idResource", (recursos.get(recursosEditText.getText().toString()).intValue()));
+                    mServiceIntentSOLICITAR.putExtra("cantidad", Integer.valueOf(cantidad.getText().toString()));
 
-                startService(mServiceIntentSOLICITAR);
+                    startService(mServiceIntentSOLICITAR);
+                }
+                else
+                    notifyError();
             }
         });
     }
@@ -98,5 +101,33 @@ public class PeticionActivity extends AppCompatActivity {
 
     public void setRecursos(HashMap<String, Integer> recursos) {
         this.recursos = recursos;
+    }
+
+    private boolean validatedFields() {
+        if(recursosEditText.getText().toString().equals(""))
+            return false;
+        else
+        if( recursos.get(recursosEditText.getText().toString())== null  || cantidad.getText().toString().equals("")){
+            return false;
+        }
+        return true;
+    }
+
+    private void notifyError() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Registro de Petición");
+        dialog.setCancelable(true);
+        dialog.setMessage("Alguno de los campos requeridos no fue completado o es incorrecto ");
+        AlertDialog alertDialog = dialog.create();
+        alertDialog.show();
+
+    }
+
+
+    public void notifySuccess(String mensaje) {
+        Toast toast = Toast.makeText(getApplicationContext(),
+                mensaje, Toast.LENGTH_LONG);
+        toast.show();
+        finish();
     }
 }

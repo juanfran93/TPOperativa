@@ -19,11 +19,11 @@ import Funcionalidad.Recurso;
  * Created by lucho on 26/01/2018.
  */
 
-public class LocalReciverPeticion extends BroadcastReceiver {
+public class LocalRecieverPeticion extends BroadcastReceiver {
 
     private PeticionActivity peticionAct;
 
-    public LocalReciverPeticion(PeticionActivity peticionActivity){
+    public LocalRecieverPeticion(PeticionActivity peticionActivity){
         this.peticionAct = peticionActivity;
 
     }
@@ -51,7 +51,16 @@ public class LocalReciverPeticion extends BroadcastReceiver {
                 peticionAct.setAutoTextResources(Recursos);
                 peticionAct.setRecursos(Recursos);
                 break;
+            default :
+                try {
+                    JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
+                    String mensaje = jsona.getString("mensaje");
+                    peticionAct.notifySuccess(mensaje);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+                break;
 
 
         }

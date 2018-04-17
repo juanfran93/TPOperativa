@@ -63,8 +63,9 @@ public class RegisterActivity extends AppCompatActivity{
 
         LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
         final Intent mServiceIntent = new Intent(RegisterActivity.this, ServiceCaller.class);
-        mServiceIntent.putExtra(ServiceCaller.OPERACION, "getinstitutions");
-        mServiceIntent.putExtra(ServiceCaller.RUTA, "getinstitutions");
+        mServiceIntent.putExtra(ServiceCaller.OPERACION, "getinstituciones");
+        mServiceIntent.putExtra(ServiceCaller.RUTA, "getinstituciones");
+        startService(mServiceIntent);
 
         this.Nombre = (TextView) findViewById(R.id.txt_Cantidad);
         this.Nombre.setOnClickListener(new View.OnClickListener() {
@@ -87,7 +88,11 @@ public class RegisterActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if(String.valueOf(Usuario.getText()).equals("Nombre de usuario"))
-                    Usuario.setText("");
+
+                  
+                  
+                  
+              Usuario.setText("");
             }
         });
         this.Direccion = (TextView) findViewById(R.id.txt_direccion);
@@ -165,8 +170,7 @@ public class RegisterActivity extends AppCompatActivity{
             intentL.putExtra("telefono",Telefono.getText().toString());
             intentL.putExtra("web",Website.getText().toString());
             intentL.putExtra("password",Password.getText().toString());
-            //TODO Sacar ciudad -> poner institucion.
-            intentL.putExtra("ciudad", instituciones.get(institucionesEditText.getText().toString()).toString());
+            intentL.putExtra("institucion",instituciones.get(institucionesEditText.getText().toString()));
             intentL.putExtra("longitud",2.00);
             intentL.putExtra("latitud",2.00);
             startService(intentL);
@@ -218,5 +222,13 @@ public class RegisterActivity extends AppCompatActivity{
 
         Timer timer = new Timer();
         timer.schedule(task, 2500);
+    }
+
+    public void notifyUserExist(String mensaje) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Registro de Usuario");
+        dialog.setCancelable(true);
+        dialog.setMessage(mensaje);
+        dialog.show();
     }
 }

@@ -29,10 +29,10 @@ public class LocalRecieverRegister extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String operation = intent.getStringExtra(ServiceCaller.OPERACION);
         switch (operation) {
-            case "getintitutions" :
+            case "getinstituciones" :
                 try {
                     JSONObject json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
-                    JSONArray jsonArray = new JSONArray(json.getString("institutions"));
+                    JSONArray jsonArray = new JSONArray(json.getString("instituciones"));
                     HashMap<String, Integer> institutions = new HashMap<>();
 
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -46,22 +46,23 @@ public class LocalRecieverRegister extends BroadcastReceiver {
                     e.printStackTrace();
                 }
                 break;
+            case "registeruser" :
+                try {
+                    JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
+                    int status = jsona.getInt("status");
+                    switch (status){
+                        case 200 :
+                            registerActivity.notifySuccess(jsona.getString("mensaje"));
+                            break;
+                        case 400 :
+                            registerActivity.notifyUserExist(jsona.getString("mensaje"));
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
         }
-        /*
-        String operation = intent.getStringExtra(ServiceCaller.OPERACION);
-        try {
-            JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
-            int status = jsona.getInt("status");
-            switch (status){
-                case 200 :
-                    registerActivity.notifySuccess(jsona.getString("mensaje"));
-                    break;
-                default :
-                    break;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        */
+
     }
 }
