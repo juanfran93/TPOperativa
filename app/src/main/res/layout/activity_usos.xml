@@ -133,7 +133,19 @@
                 android:id="@+id/cantidad_spinner"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp" />
+                android:layout_marginLeft="20dp"
+                android:visibility="visible" />
+
+            <EditText
+                android:id="@+id/cantidad_eText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/colorFondo"
+                android:backgroundTint="@color/colorFondo"
+                android:ems="10"
+                android:inputType="number|numberDecimal" />
 
             <Button
                 android:id="@+id/confirmUpdate_button"

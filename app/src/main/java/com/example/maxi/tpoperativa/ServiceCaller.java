@@ -75,7 +75,7 @@ public class ServiceCaller extends IntentService {
                 case "addPackage":
                     //preparacion para envio de json
                     json.put("idResource",intent.getIntExtra("resource",-1));
-                    json.put("cantidad",intent.getStringExtra("cantidad"));
+                    json.put("cantidad",intent.getDoubleExtra("cantidad",-1));
                     json.put("id_user",intent.getIntExtra("id_user",-1));
 
                     Log.d(TAG,json.toString());
@@ -148,7 +148,7 @@ public class ServiceCaller extends IntentService {
                     break;
                 case "addpeticion" :
                     json.put("idResource",intent.getIntExtra("idResource",-1));
-                    json.put("cantidad",intent.getIntExtra("cantidad",-1));
+                    json.put("cantidad",intent.getDoubleExtra("cantidad",-1));
                     json.put("idUser",intent.getIntExtra("idUser",-1));
 
                     Log.d(TAG,json.toString());
@@ -173,7 +173,7 @@ public class ServiceCaller extends IntentService {
 
                 case "actualizarpackage" :
                     json.put("id_package",intent.getIntExtra("id_package",-1));
-                    json.put("enUso",intent.getIntExtra("enUso",-1));
+                    json.put("enUso",intent.getDoubleExtra("enUso",-1));
 
                     Log.d(TAG,json.toString());
 
@@ -186,8 +186,8 @@ public class ServiceCaller extends IntentService {
                 case "brokenobject" :
                     json.put("id_package",intent.getIntExtra("id_package",-1));
                     json.put("enUso",intent.getIntExtra("enUso",-1));
-                    json.put("cantidad",intent.getIntExtra("cantidad",-1));
-                    json.put("resource",intent.getIntExtra("resource",-1));
+                    json.put("cantidad",intent.getDoubleExtra("cantidad",-1));
+                    json.put("resource",intent.getDoubleExtra("resource",-1));
                     json.put("user",intent.getIntExtra("user",-1));
 
 

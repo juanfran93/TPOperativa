@@ -146,8 +146,8 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
         mMap.clear();
 
         int count = 1;
-        ArrayList<ArrayList<LatLng>> listLatLng = new ArrayList<ArrayList<LatLng>>();  //
-
+       // ArrayList<ArrayList<LatLng>> listLatLng = new ArrayList<ArrayList<LatLng>>();  //
+/****
         PointInfoList pil = new PointInfoList(pointInfo);
         for (ArrayList<PointInfo> al : pil.ordenarNodos()) {
             ArrayList<LatLng> lll = new ArrayList<LatLng>();
@@ -157,10 +157,11 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
                 lll.add(p.getLatLng());
                 count++;
             }
-            listLatLng.add(lll);
+//            listLatLng.add(lll);
         }
+ */
 
-        for (ArrayList<LatLng> al : listLatLng ) {
+  /*      for (ArrayList<LatLng> al : listLatLng ) {
             Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
                     .clickable(true)
                     .addAll(al));
@@ -172,6 +173,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
             polyline1.setTag("A");
 
         }
+        */
     }
 
     //Cambio la ventana del punto con la info

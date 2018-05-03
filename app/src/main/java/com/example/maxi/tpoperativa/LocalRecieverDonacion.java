@@ -47,6 +47,7 @@ class LocalRecieverDonacion extends BroadcastReceiver {
                     JSONArray jsonArray = new JSONArray(json.getString("resources"));
 
                     HashMap<String, Integer> recursos = new HashMap<>();
+                    HashMap<String,Boolean> fraccionarios = new HashMap<>();
 
                     for (int i = 0; i < jsonArray.length(); i++) {
 
@@ -56,8 +57,9 @@ class LocalRecieverDonacion extends BroadcastReceiver {
                         String recurso = jsonRecurso.getString("nombre");
 
                         recursos.put(recurso, id);
+                        fraccionarios.put(recurso,jsonRecurso.getBoolean("fraccionario"));
                     }
-                    activityDonation.setAutoTextResources(recursos);
+                    activityDonation.setAutoTextResources(recursos,fraccionarios);
 
 
                 } catch (Exception e) {
