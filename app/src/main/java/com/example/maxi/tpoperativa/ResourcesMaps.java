@@ -147,30 +147,33 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
 
         int count = 1;
         ArrayList<ArrayList<LatLng>> listLatLng = new ArrayList<ArrayList<LatLng>>();  //
-
-        PointInfoList pil = new PointInfoList(pointInfo);
-        for (ArrayList<PointInfo> al : pil.ordenarNodos()) {
-            ArrayList<LatLng> lll = new ArrayList<LatLng>();
-            for(PointInfo p : al) {
-                changeLocationIdem(p);
-                addPointIntoMap(p, count);
-                lll.add(p.getLatLng());
-                count++;
+        if (pointInfo.size() != 0){
+            Log.d("POINTINFO",pointInfo.toString());
+            PointInfoList pil = new PointInfoList(pointInfo);
+            for (ArrayList<PointInfo> al : pil.ordenarNodos()) {
+                ArrayList<LatLng> lll = new ArrayList<LatLng>();
+                for(PointInfo p : al) {
+                    changeLocationIdem(p);
+                    addPointIntoMap(p, count);
+                    lll.add(p.getLatLng());
+                    count++;
+                }
+                listLatLng.add(lll);
             }
-            listLatLng.add(lll);
-        }
 
-        for (ArrayList<LatLng> al : listLatLng ) {
-            Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
-                    .clickable(true)
-                    .addAll(al));
-            polyline1.setColor(Color.BLUE);
-            polyline1.setGeodesic(true);
-            polyline1.setStartCap(new RoundCap());
-            polyline1.setEndCap(new CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.ic_flecha), 10));
-            polyline1.setJointType(1);
-            polyline1.setTag("A");
+            for (ArrayList<LatLng> al : listLatLng ) {
+                Polyline polyline1 = googleMap.addPolyline(new PolylineOptions()
+                        .clickable(true)
+                        .addAll(al));
+                polyline1.setColor(Color.RED);
+                polyline1.setGeodesic(true);
+                polyline1.setStartCap(new RoundCap());
+                polyline1.setEndCap(new CustomCap(BitmapDescriptorFactory.fromResource(R.drawable.ic_flecha), 10));
+                polyline1.setJointType(1);
+                polyline1.setTag("A");
 
+
+            }
         }
     }
 
