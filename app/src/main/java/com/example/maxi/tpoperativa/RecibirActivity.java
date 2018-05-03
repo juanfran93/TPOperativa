@@ -127,6 +127,11 @@ public class RecibirActivity extends AppCompatActivity {
             spinnerResource.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    StringTokenizer st = new StringTokenizer(spinnerResource.getSelectedItem().toString());
+                    Integer id = Integer.valueOf(st.nextToken());
+                    recurso_tv.setText("Recurso : "+ peticiones.get(id).getRecurso());
+                    cantidad_tv.setText("Cantidad solicitada : " + peticiones.get(id).getCantidad());
+
                     final Intent mServiceIntentSpinner = new Intent(RecibirActivity.this, ServiceCaller.class);
                     mServiceIntentSpinner.putExtra(ServiceCaller.OPERACION, GET_USERINFO_OP);
                     StringTokenizer tokenizer = new StringTokenizer(spinnerResource.getSelectedItem().toString());

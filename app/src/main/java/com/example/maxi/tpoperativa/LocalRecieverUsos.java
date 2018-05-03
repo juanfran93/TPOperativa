@@ -35,14 +35,17 @@ public class LocalRecieverUsos extends BroadcastReceiver {
                     JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
 
                     HashMap<String,Integer> recursos = new HashMap<String,Integer>();
+                    HashMap<String, Boolean> fraccionarios = new HashMap<String,Boolean>();
 
                     JSONArray json = new JSONArray(jsona.getString("resources"));
 
                     for(int i = 0; i < json.length(); i++) {
                         JSONObject jsonRec = json.getJSONObject(i);
-                        recursos.put(jsonRec.getString("nombre"),jsonRec.getInt("id"));
+                        String nombre = jsonRec.getString("nombre");
+                        recursos.put(nombre,jsonRec.getInt("id"));
+                        fraccionarios.put(nombre,jsonRec.getBoolean("fraccionario"));
                     }
-                    activity.setRecursos(recursos);
+                    activity.setRecursos(recursos,fraccionarios);
 
                 }catch (JSONException e) {
                     e.printStackTrace();
@@ -61,8 +64,8 @@ public class LocalRecieverUsos extends BroadcastReceiver {
                         Integer id = jsonRec.getInt("id");
                         Paquete p = new Paquete();
                         p.setId(id);
-                        p.setCantidad(jsonRec.getInt("cantidad"));
-                        p.setEnUso(jsonRec.getInt("enUso"));
+                        p.setCantidad(jsonRec.getDouble("cantidad"));
+                        p.setEnUso(jsonRec.getDouble("enUso"));
                         p.setIdResource(jsonRec.getInt("idResource"));
                         packages.put(id,p);
 
@@ -96,7 +99,7 @@ public class LocalRecieverUsos extends BroadcastReceiver {
                 try {
                     JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
                     String mensaje = jsona.getString("mensaje");
-                    activity.notifySuccess(mensaje);
+                    //activity.notifySuccess(mensaje);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

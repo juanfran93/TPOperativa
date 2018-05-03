@@ -74,7 +74,8 @@
             android:exported="false" />
 
         <activity android:name=".RecibirActivity" />
-        <activity android:name=".UsosActivity"></activity>
+        <activity android:name=".UsosActivity" />
+        <activity android:name=".CodeActivity"></activity>
     </application>
 
 </manifest>

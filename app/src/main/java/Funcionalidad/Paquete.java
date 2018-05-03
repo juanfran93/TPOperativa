@@ -6,20 +6,21 @@ package Funcionalidad;
 
 public class Paquete {
     private int id;
-    private int cantidad;
+    private double cantidad;
     private int idPadre;
     private int idResource;
-    private int enUso;
+    private double enUso;
+
     public int getId() {
         return id;
     }
     public void setId(int id) {
         this.id = id;
     }
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
     public int getIdPadre() {
@@ -34,10 +35,10 @@ public class Paquete {
     public void setIdResource(int idResource) {
         this.idResource = idResource;
     }
-    public int getEnUso() {
+    public double getEnUso() {
         return enUso;
     }
-    public void setEnUso(int enUso) {
+    public void setEnUso(double enUso) {
         this.enUso = enUso;
     }
 }

@@ -26,6 +26,10 @@
             android:id="@+id/nav_UsosRecurso"
             android:icon="?android:attr/actionModeSelectAllDrawable"
             android:title="Actualizar estado de paquetes" />
+        <item
+            android:id="@+id/nav_codeRecurso"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Recuperar Codigo QR" />
     </group>
 
     <item android:title="Communicate">

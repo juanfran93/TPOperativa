@@ -18,8 +18,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -27,6 +29,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,6 +45,7 @@ public class DonationActivity extends AppCompatActivity {
     private LocalRecieverDonacion reciever = new LocalRecieverDonacion(this);
     private Persona persona;
     private EditText cantidadEditText;
+    private HashMap<String, Boolean> fraccionarios;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,34 @@ public class DonationActivity extends AppCompatActivity {
         mServiceIntent.putExtra(ServiceCaller.RUTA, "getresources");
 
         startService(mServiceIntent);
+        recursosEditText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(fraccionarios.get(adapterView.getItemAtPosition(i).toString())){
+                    cantidadEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL); //permite cantidades con decimales
+                }
+                else{
+                    cantidadEditText.setInputType(InputType.TYPE_CLASS_NUMBER); // permite solo cantidades enteras
+                }
+
+            }
+        });
+        recursosEditText.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(fraccionarios.get(recursosEditText.getText().toString())){
+                    cantidadEditText.setInputType(8192); //permite cantidades con decimales
+                }
+                else{
+                    cantidadEditText.setInputType(2); // permite solo cantidades enteras
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
         cantidadEditText = (EditText) findViewById(R.id.editText_cantidad);
 
@@ -64,9 +98,9 @@ public class DonationActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 if (ContextCompat.checkSelfPermission(DonationActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(DonationActivity.this,
-                            new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                             2);
                 }
                 if(validatedFields()) {
@@ -74,7 +108,8 @@ public class DonationActivity extends AppCompatActivity {
                     mServiceIntent.putExtra(ServiceCaller.RUTA, "addpackage");
                     mServiceIntent.putExtra("id_user", persona.getId());
                     mServiceIntent.putExtra("resource", recursos.get(recursosEditText.getText().toString()));
-                    mServiceIntent.putExtra("cantidad", cantidadEditText.getText().toString());
+                    mServiceIntent.putExtra("cantidad", Double.valueOf(cantidadEditText.getText().toString()));
+                    Log.d("<<.......",cantidadEditText.getText().toString());
 
                     startService(mServiceIntent);
                 }
@@ -106,8 +141,9 @@ public class DonationActivity extends AppCompatActivity {
         return true;
     }
 
-    public void setAutoTextResources(HashMap<String, Integer> recursos) {
+    public void setAutoTextResources(HashMap<String, Integer> recursos, HashMap<String, Boolean> fraccionarios) {
         this.recursos = recursos;
+        this.fraccionarios = fraccionarios;
         String[] recursosList = recursos.keySet().toArray(new String[recursos.keySet().size()]);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this, android.R.layout.simple_list_item_1, recursosList);
@@ -139,23 +175,18 @@ public class DonationActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = dialog.create();
         alertDialog.show();
-
-        backToMenu(alertDialog);
-
     }
 
-    public void addImageToGallery(Bitmap bitmap) {
+    public void addImageToGallery(Bitmap bitmap)  {
 
         String ImagePath = MediaStore.Images.Media.insertImage(
                 getContentResolver(),
                 bitmap,
-                "QR",
+                "QR - " + recursosEditText.getText().toString(),
                 "QR code TrazaApp"
         );
         Uri URI = Uri.parse(ImagePath);
     }
 
-   private void backToMenu(final AlertDialog dialog) {
-   }
 }
 

@@ -1,5 +1,6 @@
 package com.example.maxi.tpoperativa;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -37,7 +39,9 @@ public class UsosActivity extends AppCompatActivity {
     private Spinner spinnerResources;
     private Spinner spinnerPackages;
     private Spinner spinnerCantidad;
+    private EditText cantidadFloat;
     private HashMap<String,Integer> recursos;
+    private HashMap<String,Boolean> fraccionarios;
     private HashMap<Integer, Paquete> paquetes;
 
     @Override
@@ -68,11 +72,22 @@ public class UsosActivity extends AppCompatActivity {
             final TextView cantidadTV = (TextView) findViewById(R.id.cantidad_total);
             final TextView enUsoTV = (TextView) findViewById(R.id.cantidad_enUso);
 
+            cantidadFloat = (EditText) findViewById(R.id.cantidad_eText);
+            cantidadFloat.setVisibility(View.GONE);
+
 
             this.spinnerResources.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
+                    if(fraccionarios.get(spinnerResources.getSelectedItem().toString())){
+                        cantidadFloat.setVisibility(View.VISIBLE);
+                        spinnerCantidad.setVisibility(View.GONE);
+                    }
+                    else{
+                        cantidadFloat.setVisibility(View.GONE);
+                        spinnerCantidad.setVisibility(View.VISIBLE);
+                    }
                     String resource = (String) spinnerResources.getSelectedItem();
                     mServiceIntent.putExtra(ServiceCaller.OPERACION, "getcurrentownpackagebyresource");
                     mServiceIntent.putExtra(ServiceCaller.RUTA, "getcurrentownpackagebyresource");
@@ -93,14 +108,21 @@ public class UsosActivity extends AppCompatActivity {
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     Paquete paquete = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
                     resourceTV.setText("Recurso: "+ spinnerResources.getSelectedItem().toString());
-                    cantidadTV.setText("Cantidad total: "+ paquete.getCantidad());
-                    enUsoTV.setText("Cantidad en uso: "+ paquete.getEnUso());
-                    Integer[] packageAmount =  new Integer[paquete.getEnUso()];
-                    for (int i = 1; i <= paquete.getEnUso(); i++) {
-                        packageAmount[i - 1] = i;
+                    if(!fraccionarios.get(spinnerResources.getSelectedItem().toString())) {
+                        Integer[] packageAmount = new Integer[(int) paquete.getEnUso()];
+                        for (int i = 1; i <= paquete.getEnUso(); i++) {
+                            packageAmount[i - 1] = i;
+                        }
+                        cantidadTV.setText("Cantidad total: "+ (int) paquete.getCantidad());
+                        enUsoTV.setText("Cantidad en uso: "+ (int) paquete.getEnUso());
+                        ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(UsosActivity.this, android.R.layout.simple_list_item_1, packageAmount);
+                        spinnerCantidad.setAdapter(adapter);
                     }
-                    ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(UsosActivity.this,android.R.layout.simple_list_item_1,packageAmount);
-                    spinnerCantidad.setAdapter(adapter);
+                    else {
+                        cantidadTV.setText("Cantidad total: " + paquete.getCantidad());
+                        enUsoTV.setText("Cantidad en uso: " + paquete.getEnUso());
+                    }
+
                 }
 
                 @Override
@@ -114,49 +136,95 @@ public class UsosActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     int opcion = radioGroup.getCheckedRadioButtonId();
-                    int enUsoNuevo = 0;
-
-                    switch (opcion){
-                        case R.id.donar_radio :
-                            operacion = "actualizarpackage";
-                            route = "updateamountpackage";
-                            enUsoNuevo = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString())).getEnUso()- Integer.valueOf(spinnerCantidad.getSelectedItem().toString());
-                            mServiceIntent.putExtra(ServiceCaller.OPERACION, operacion);
-                            mServiceIntent.putExtra(ServiceCaller.RUTA, route);
-                            mServiceIntent.putExtra("id_package",Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
-                            mServiceIntent.putExtra("enUso",enUsoNuevo );
-                            startService(mServiceIntent);
-                            break;
-                        case R.id.usar_radio :
-                            operacion = "actualizarpackage";
-                            route = "updateamountpackage";
-                            enUsoNuevo = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString())).getEnUso() + Integer.valueOf(spinnerCantidad.getSelectedItem().toString());
-                            mServiceIntent.putExtra(ServiceCaller.OPERACION, operacion);
-                            mServiceIntent.putExtra(ServiceCaller.RUTA, route);
-                            mServiceIntent.putExtra("id_package",Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
-                            mServiceIntent.putExtra("enUso",enUsoNuevo );
-                            startService(mServiceIntent);
-                            break;
-                        case R.id.eliminar_radio :
-                            operacion = "brokenobject";
-                            route = "unsubscribeobject";
-                            Paquete paquete = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
-                            int cantidadNueva = paquete.getCantidad() - Integer.valueOf(spinnerCantidad.getSelectedItem().toString());
-                            enUsoNuevo = paquete.getEnUso() - Integer.valueOf(spinnerCantidad.getSelectedItem().toString());
-                            mServiceIntent.putExtra(ServiceCaller.OPERACION, operacion);
-                            mServiceIntent.putExtra(ServiceCaller.RUTA, route);
-                            mServiceIntent.putExtra("id_package",Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
-                            mServiceIntent.putExtra("cantidad",cantidadNueva);
-                            mServiceIntent.putExtra("enUso",enUsoNuevo );
-                            mServiceIntent.putExtra("resource",paquete.getIdResource());
-                            mServiceIntent.putExtra("user",persona.getId());
-                            startService(mServiceIntent);
-                            break;
+                    Paquete paquete = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
+                    double enUsoNuevo = 0;
+                    if(validatedFields()) {
+                        switch (opcion) {
+                            case R.id.donar_radio:
+                                operacion = "actualizarpackage";
+                                route = "updateamountpackage";
+                                if (fraccionarios.get(spinnerResources.getSelectedItem().toString())) {
+                                    if(Double.valueOf(cantidadFloat.getText().toString())>paquete.getEnUso()|| Double.valueOf(cantidadFloat.getText().toString())<=0){
+                                        notifyError();
+                                        return;
+                                    }
+                                    enUsoNuevo = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString())).getEnUso() - Double.valueOf(cantidadFloat.getText().toString());
+                                } else {
+                                    enUsoNuevo = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString())).getEnUso() - Double.valueOf(spinnerCantidad.getSelectedItem().toString());
+                                }
+                                mServiceIntent.putExtra(ServiceCaller.OPERACION, operacion);
+                                mServiceIntent.putExtra(ServiceCaller.RUTA, route);
+                                mServiceIntent.putExtra("id_package", Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
+                                mServiceIntent.putExtra("enUso", enUsoNuevo);
+                                startService(mServiceIntent);
+                                break;
+                            case R.id.usar_radio:
+                                operacion = "actualizarpackage";
+                                route = "updateamountpackage";
+                                if (fraccionarios.get(spinnerResources.getSelectedItem().toString())) {
+                                    if(Double.valueOf(cantidadFloat.getText().toString())>paquete.getCantidad()-paquete.getEnUso()|| Double.valueOf(cantidadFloat.getText().toString())<=0){
+                                        notifyError();
+                                        return;
+                                    }
+                                    enUsoNuevo = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString())).getEnUso() + Double.valueOf(cantidadFloat.getText().toString());
+                                } else {
+                                    enUsoNuevo = paquetes.get(Integer.valueOf(spinnerPackages.getSelectedItem().toString())).getEnUso() + Double.valueOf(spinnerCantidad.getSelectedItem().toString());
+                                }
+                                mServiceIntent.putExtra(ServiceCaller.OPERACION, operacion);
+                                mServiceIntent.putExtra(ServiceCaller.RUTA, route);
+                                mServiceIntent.putExtra("id_package", Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
+                                mServiceIntent.putExtra("enUso", enUsoNuevo);
+                                startService(mServiceIntent);
+                                break;
+                            case R.id.eliminar_radio:
+                                operacion = "brokenobject";
+                                route = "unsubscribeobject";
+                                double cantidadNueva = 0;
+                                if (fraccionarios.get(spinnerResources.getSelectedItem().toString())) {
+                                    if(Double.valueOf(cantidadFloat.getText().toString())>paquete.getEnUso()|| Double.valueOf(cantidadFloat.getText().toString())<=0){
+                                        notifyError();
+                                        return;
+                                    }
+                                    cantidadNueva = paquete.getCantidad() - Double.valueOf(cantidadFloat.getText().toString());
+                                    enUsoNuevo = paquete.getEnUso() - Double.valueOf(cantidadFloat.getText().toString());
+                                } else {
+                                    cantidadNueva = paquete.getCantidad() - Double.valueOf(spinnerCantidad.getSelectedItem().toString());
+                                    enUsoNuevo = paquete.getEnUso() - Double.valueOf(spinnerCantidad.getSelectedItem().toString());
+                                }
+                                mServiceIntent.putExtra(ServiceCaller.OPERACION, operacion);
+                                mServiceIntent.putExtra(ServiceCaller.RUTA, route);
+                                mServiceIntent.putExtra("id_package", Integer.valueOf(spinnerPackages.getSelectedItem().toString()));
+                                mServiceIntent.putExtra("cantidad", cantidadNueva);
+                                mServiceIntent.putExtra("enUso", enUsoNuevo);
+                                mServiceIntent.putExtra("resource", paquete.getIdResource());
+                                mServiceIntent.putExtra("user", persona.getId());
+                                startService(mServiceIntent);
+                                break;
+                        }
+                    }else{
+                        notifyError();
                     }
+
                 }
             });
 
         }
+    }
+
+    private void notifyError() {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            dialog.setTitle("Actualizacion de Paquetes");
+            dialog.setCancelable(true);
+            dialog.setMessage("Alguno de los campos requeridos no fue completado o es incorrecto ");
+            AlertDialog alertDialog = dialog.create();
+            alertDialog.show();
+    }
+
+    private boolean validatedFields() {
+        if(cantidadFloat.getVisibility()!=View.GONE && cantidadFloat.getText().toString().equals("")){
+            return false;
+        }
+        return true;
     }
 
     public void onRadioButtonClicked(View view) {
@@ -171,30 +239,38 @@ public class UsosActivity extends AppCompatActivity {
                 if (checked) {
 
                     textViewMsg = "Cantidad a donar";
-                    packageAmount = new Integer[paquete.getEnUso()];
-                    for (int i = 1; i <= paquete.getEnUso(); i++) {
-                        packageAmount[i - 1] = i;
+                    if(!fraccionarios.get(spinnerResources.getSelectedItem().toString())) {
+                        packageAmount = new Integer[(int) paquete.getEnUso()];
+                        for (int i = 1; i <= paquete.getEnUso(); i++) {
+                            packageAmount[i - 1] = i;
+                        }
                     }
+
+
                 }
                 break;
             case R.id.usar_radio:
 
                 if (checked) {
                     textViewMsg = "Cantidad a usar";
-                    packageAmount = new Integer[paquete.getCantidad() - paquete.getEnUso()];
-                    if(paquete.getCantidad() - paquete.getEnUso()!=0){
-                        for (int i = 1; i <= paquete.getCantidad() - paquete.getEnUso(); i++) {
-                            packageAmount[i - 1] = i;
+                    if (!fraccionarios.get(spinnerResources.getSelectedItem().toString())) {
+                        packageAmount = new Integer[(int) (paquete.getCantidad() - paquete.getEnUso())];
+                        if (paquete.getCantidad() - paquete.getEnUso() != 0) {
+                            for (int i = 1; i <= paquete.getCantidad() - paquete.getEnUso(); i++) {
+                                packageAmount[i - 1] = i;
+                            }
                         }
                     }
                 }
                 break;
             case R.id.eliminar_radio:
-                if (checked){
+                if (checked) {
                     textViewMsg = "Cantidad a dar de baja";
-                    packageAmount = new Integer[paquete.getEnUso()];
-                    for(int i=1;i<=paquete.getEnUso();i++){
-                        packageAmount[i-1]= i;
+                    if (!fraccionarios.get(spinnerResources.getSelectedItem().toString())) {
+                        packageAmount = new Integer[(int) paquete.getEnUso()];
+                        for (int i = 1; i <= paquete.getEnUso(); i++) {
+                            packageAmount[i - 1] = i;
+                        }
                     }
                 }
                 break;
@@ -207,8 +283,9 @@ public class UsosActivity extends AppCompatActivity {
 
     }
 
-    public void setRecursos(HashMap<String, Integer> recursos) {
+    public void setRecursos(HashMap<String, Integer> recursos, HashMap<String,Boolean> fraccionarios) {
         this.recursos = recursos;
+        this.fraccionarios = fraccionarios;
         String[] recursosList = recursos.keySet().toArray(new String[recursos.keySet().size()]);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this,android.R.layout.simple_list_item_1,recursosList);

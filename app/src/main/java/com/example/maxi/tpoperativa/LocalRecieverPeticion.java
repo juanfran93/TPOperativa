@@ -34,28 +34,31 @@ public class LocalRecieverPeticion extends BroadcastReceiver {
         switch (operation){
             case PeticionActivity.GETRESOURCES_OP :
                 //--
-                HashMap<String,Integer> Recursos = new HashMap<>();
+                HashMap<String,Integer> recursos = new HashMap<>();
+                HashMap<String,Boolean> fraccionarios = new HashMap<>();
                 try {
                     JSONObject json = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
                     JSONArray jsonArray = new JSONArray(json.getString("resources"));
 
                     for(int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonRec = jsonArray.getJSONObject(i);
-                        Recursos.put(jsonRec.getString("nombre"),jsonRec.getInt("id"));
+                        String nombre = jsonRec.getString("nombre");
+                        recursos.put(nombre,jsonRec.getInt("id"));
+                        fraccionarios.put(nombre,jsonRec.getBoolean("fraccionario"));
                     }
 
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                peticionAct.setAutoTextResources(Recursos);
-                peticionAct.setRecursos(Recursos);
+                peticionAct.setAutoTextResources(recursos);
+                peticionAct.setRecursos(recursos,fraccionarios);
                 break;
             default :
                 try {
                     JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
                     String mensaje = jsona.getString("mensaje");
-                    peticionAct.notifySuccess(mensaje);
+                    //peticionAct.notifySuccess(mensaje);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

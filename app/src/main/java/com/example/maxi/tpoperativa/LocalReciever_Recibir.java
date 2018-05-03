@@ -53,6 +53,7 @@ public class LocalReciever_Recibir extends BroadcastReceiver {
                         peti.setId_origen(jsonRec.getInt("id_origen"));
                         peti.setId_package(jsonRec.getInt("id_package"));
                         peti.setId_recurso(jsonRec.getInt("id_recurso"));
+                        peti.setRecurso(jsonRec.getString("recurso"));
 
                         peticiones.put(jsonRec.getInt("id_peticion"),peti);
                     }

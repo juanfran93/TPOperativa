@@ -173,8 +173,10 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
                 polyline1.setTag("A");
 
 
+
             }
         }
+        */
     }
 
     //Cambio la ventana del punto con la info
