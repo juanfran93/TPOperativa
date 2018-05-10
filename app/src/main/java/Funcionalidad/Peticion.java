@@ -7,19 +7,11 @@ package Funcionalidad;
 public class Peticion {
     private int id_peticion;
     private int id_recurso;
-
-    public int getId_recurso() {
-        return id_recurso;
-    }
-
-    public void setId_recurso(int id_recurso) {
-        this.id_recurso = id_recurso;
-    }
-
     private String recurso;
-    private int cantidad;
+    private double cantidad;
     private int id_origen;
     private int id_package;
+    private boolean fraccionario;
 
 
     public int getId_package() {
@@ -41,10 +33,10 @@ public class Peticion {
     public void setRecurso(String recurso) {
         this.recurso = recurso;
     }
-    public int getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
-    public void setCantidad(int cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
     public int getId_peticion() {
@@ -53,6 +45,15 @@ public class Peticion {
     public void setId_peticion(int id_peticion) {
         this.id_peticion = id_peticion;
     }
+    public int getId_recurso() {
+        return id_recurso;
+    }
+
+    public void setId_recurso(int id_recurso) {
+        this.id_recurso = id_recurso;
+    }
+    public boolean isFraccionario(){return this.fraccionario;}
+    public void setFraccionario(boolean fraccionario){this.fraccionario = fraccionario;}
 
 
 

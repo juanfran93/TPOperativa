@@ -54,11 +54,11 @@ public class LocalRecieverPeticion extends BroadcastReceiver {
                 peticionAct.setAutoTextResources(recursos);
                 peticionAct.setRecursos(recursos,fraccionarios);
                 break;
-            default :
+             case "addpeticion" :
                 try {
                     JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
                     String mensaje = jsona.getString("mensaje");
-                    //peticionAct.notifySuccess(mensaje);
+                    peticionAct.notifySuccess(mensaje);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

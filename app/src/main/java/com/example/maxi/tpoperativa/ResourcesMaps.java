@@ -153,10 +153,12 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
             for (ArrayList<PointInfo> al : pil.ordenarNodos()) {
                 ArrayList<LatLng> lll = new ArrayList<LatLng>();
                 for(PointInfo p : al) {
-                    changeLocationIdem(p);
-                    addPointIntoMap(p, count);
-                    lll.add(p.getLatLng());
-                    count++;
+                    if(al.indexOf(p)==0 || p.getId_origen()!=p.getId_destino()) {
+                        changeLocationIdem(p);
+                        addPointIntoMap(p, count);
+                        lll.add(p.getLatLng());
+                        count++;
+                    }
                 }
                 listLatLng.add(lll);
             }
@@ -176,7 +178,7 @@ public class ResourcesMaps extends AppCompatActivity implements OnMapReadyCallba
 
             }
         }
-        */
+
     }
 
     //Cambio la ventana del punto con la info

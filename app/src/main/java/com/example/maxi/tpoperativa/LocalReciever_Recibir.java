@@ -49,11 +49,12 @@ public class LocalReciever_Recibir extends BroadcastReceiver {
 
                         Peticion peti = new Peticion();
                         peti.setId_peticion(jsonRec.getInt("id_peticion"));
-                        peti.setCantidad(jsonRec.getInt("cantidad"));
+                        peti.setCantidad(jsonRec.getDouble("cantidad"));
                         peti.setId_origen(jsonRec.getInt("id_origen"));
                         peti.setId_package(jsonRec.getInt("id_package"));
                         peti.setId_recurso(jsonRec.getInt("id_recurso"));
                         peti.setRecurso(jsonRec.getString("recurso"));
+                        peti.setFraccionario(jsonRec.getBoolean("fraccionario"));
 
                         peticiones.put(jsonRec.getInt("id_peticion"),peti);
                     }

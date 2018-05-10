@@ -228,7 +228,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             intentL.putExtra(ServiceCaller.OPERACION, ATTEMPTLOGIN_OP);
             intentL.putExtra(ServiceCaller.RUTA, ATTEMPTLOGIN_PATH);
             intentL.putExtra("email",email);
-            intentL.putExtra("password",password);
+            intentL.putExtra("password",RegisterActivity.md5(password));
 
             startService(intentL);
 
@@ -353,6 +353,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public void showError(){
         mPasswordView.setError(getString(R.string.error_incorrect_password));
         mPasswordView.requestFocus();
+        showProgress(false);
     }
 
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
@@ -371,42 +372,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-
-            try {
-                Log.d("CONECTANDO","INICIANDO CONEXION");
-
-                String query = "SELECT * FROM USERS " +
-                        "WHERE email='"+this.mEmail+"'" +
-                        "  AND PASSWORD='"+this.mPassword+"'";
-
-                ResultSet resultSet = Sql.getResultset(query);
-
-                if(resultSet.next()){
-                    Log.d("EXISTE","Existe el usuario, piola");
-                    // conn.close();
-                    boolean admin = false;
-                    Log.d("Es admin:",resultSet.getString("role_id"));
-                    if(resultSet.getInt("role_id")==1){
-                        admin = true;
-                    }
-
-                    user = new Persona(resultSet.getInt("id"),resultSet.getString("username"),
-                            resultSet.getString("password"),resultSet.getString("name"),
-                            resultSet.getString("phone"),resultSet.getString("address"),
-                            resultSet.getInt("location_id"),admin,resultSet.getString("email"),
-                            resultSet.getDouble("latitude"),resultSet.getDouble("longitude"),resultSet.getString("website"));
-                    user.setDireccion(resultSet.getString("address"));
-
-
-
-                }else {
-                    return false;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return false;
-            }
-
             return true;
         }
 

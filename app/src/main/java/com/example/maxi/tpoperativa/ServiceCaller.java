@@ -134,7 +134,7 @@ public class ServiceCaller extends IntentService {
                 case "sendpackage":
                     json.put("id_package",intent.getIntExtra("id_package",-1));
                     json.put("id_resource",intent.getIntExtra("id_resource",-1));
-                    json.put("cantidad",intent.getIntExtra("cantidad",-1));
+                    json.put("cantidad",intent.getDoubleExtra("cantidad",-1));
                     json.put("id_origen",intent.getIntExtra("id_origen",-1));
                     json.put("id_destino",intent.getIntExtra("id_destino",-1));
 
@@ -185,9 +185,9 @@ public class ServiceCaller extends IntentService {
 
                 case "brokenobject" :
                     json.put("id_package",intent.getIntExtra("id_package",-1));
-                    json.put("enUso",intent.getIntExtra("enUso",-1));
+                    json.put("enUso",intent.getDoubleExtra("enUso",-1));
                     json.put("cantidad",intent.getDoubleExtra("cantidad",-1));
-                    json.put("resource",intent.getDoubleExtra("resource",-1));
+                    json.put("resource",intent.getIntExtra("resource",-1));
                     json.put("user",intent.getIntExtra("user",-1));
 
 
