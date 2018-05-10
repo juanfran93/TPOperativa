@@ -95,16 +95,24 @@ public class LocalRecieverUsos extends BroadcastReceiver {
                     e.printStackTrace();
                 }
                 break;
-            default :
+            case "actualizarpackage" :
                 try {
                     JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
                     String mensaje = jsona.getString("mensaje");
-                    //activity.notifySuccess(mensaje);
+                    activity.notifySuccess(mensaje);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
                 break;
+            case "brokenobject" :
+                try {
+                    JSONObject jsona = new JSONObject(intent.getStringExtra(ServiceCaller.RESPONSE));
+                    String mensaje = jsona.getString("mensaje");
+                    activity.notifySuccess(mensaje);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
         }
     }
 }

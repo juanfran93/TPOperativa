@@ -20,6 +20,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -169,7 +172,7 @@ public class RegisterActivity extends AppCompatActivity{
             intentL.putExtra("direccion",Direccion.getText().toString());
             intentL.putExtra("telefono",Telefono.getText().toString());
             intentL.putExtra("web",Website.getText().toString());
-            intentL.putExtra("password",Password.getText().toString());
+            intentL.putExtra("password",md5(Password.getText().toString()));
             intentL.putExtra("institucion",instituciones.get(institucionesEditText.getText().toString()));
             intentL.putExtra("longitud",2.00);
             intentL.putExtra("latitud",2.00);
@@ -230,5 +233,21 @@ public class RegisterActivity extends AppCompatActivity{
         dialog.setCancelable(true);
         dialog.setMessage(mensaje);
         dialog.show();
+    }
+
+    public static String md5(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            BigInteger number = new BigInteger(1, messageDigest);
+            String hashtext = number.toString(16);
+
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
+            }
+            return hashtext;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

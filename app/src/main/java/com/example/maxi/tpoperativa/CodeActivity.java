@@ -65,6 +65,12 @@ public class CodeActivity extends AppCompatActivity {
 
         persona = (Persona) getIntent().getSerializableExtra("Usuario");
 
+        if (ContextCompat.checkSelfPermission(CodeActivity.this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(CodeActivity.this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    2);
+        }
 
         this.spinnerResources = (Spinner) findViewById(R.id.resource_type_CODE);
         this.spinnerPackages = (Spinner) findViewById(R.id.package_id_CODE);
@@ -132,12 +138,6 @@ public class CodeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     try {
-                        if (ContextCompat.checkSelfPermission(CodeActivity.this,
-                                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                            ActivityCompat.requestPermissions(CodeActivity.this,
-                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    2);
-                        }
                         generarCodigoQR();
                     } catch (WriterException e) {
                         e.printStackTrace();

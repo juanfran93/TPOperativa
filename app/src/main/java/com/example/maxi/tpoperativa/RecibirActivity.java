@@ -130,8 +130,9 @@ public class RecibirActivity extends AppCompatActivity {
                     StringTokenizer st = new StringTokenizer(spinnerResource.getSelectedItem().toString());
                     Integer id = Integer.valueOf(st.nextToken());
                     recurso_tv.setText("Recurso : "+ peticiones.get(id).getRecurso());
-                    cantidad_tv.setText("Cantidad solicitada : " + peticiones.get(id).getCantidad());
-
+                    if(!peticiones.get(id).isFraccionario()) {
+                        cantidad_tv.setText("Cantidad solicitada : " + (int) peticiones.get(id).getCantidad());
+                    }
                     final Intent mServiceIntentSpinner = new Intent(RecibirActivity.this, ServiceCaller.class);
                     mServiceIntentSpinner.putExtra(ServiceCaller.OPERACION, GET_USERINFO_OP);
                     StringTokenizer tokenizer = new StringTokenizer(spinnerResource.getSelectedItem().toString());
@@ -168,8 +169,6 @@ public class RecibirActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     final Intent mServiceIntentCONFIRM = new Intent(RecibirActivity.this, ServiceCaller.class);   //
 
-                    mServiceIntentCONFIRM.putExtra(ServiceCaller.OPERACION, CONFIRM_OP);
-                    //todo SACAR HARDCODE
 
                     StringTokenizer tokenizer = new StringTokenizer(spinnerResource.getSelectedItem().toString());
 
@@ -179,8 +178,14 @@ public class RecibirActivity extends AppCompatActivity {
                     mServiceIntentCONFIRM.putExtra("cantidad",(peti.getCantidad()));
                     mServiceIntentCONFIRM.putExtra("id_origen",(peti.getId_origen()));
                     mServiceIntentCONFIRM.putExtra("id_destino",persona.getId());
+                    mServiceIntentCONFIRM.putExtra(ServiceCaller.OPERACION, CONFIRM_OP);
                     mServiceIntentCONFIRM.putExtra(ServiceCaller.RUTA, CONFIRM_PATH);
                     startService(mServiceIntentCONFIRM);
+
+                    mServiceIntentCONFIRM.putExtra(ServiceCaller.OPERACION, "peticionconfirmada");
+                    mServiceIntentCONFIRM.putExtra(ServiceCaller.RUTA, "checkpeticion/" + peti.getId_peticion());
+                    startService(mServiceIntentCONFIRM);
+
                 }
             });
 
