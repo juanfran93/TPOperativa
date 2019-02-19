@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        mEmailView.setText("luchotrolo@gmail.com");
+        mEmailView.setText("luchoeli@gmail.com");
         mPasswordView.setText("lucho");
         LocalBroadcastManager.getInstance(this).registerReceiver(reciever, new IntentFilter(ServiceCaller.RESPONSE_ACTION));
 
